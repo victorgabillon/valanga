@@ -5,8 +5,7 @@ Module for handling game over events.
 from dataclasses import dataclass
 from enum import Enum
 
-import chess
-
+from .game import Colors, Color
 
 class HowOver(Enum):
     """Represents the possible outcomes of a game.
@@ -39,8 +38,8 @@ class Winner(Enum):
         is_black() -> bool: Checks if the winner is black.
     """
 
-    WHITE = chess.WHITE
-    BLACK = chess.BLACK
+    WHITE = Colors.WHITE
+    BLACK = Colors.BLACK
     NO_KNOWN_WINNER = None
 
     def is_none(self) -> bool:
@@ -59,7 +58,7 @@ class Winner(Enum):
         """
         is_white_bool: bool
         if not self.is_none():
-            is_white_bool = bool(self) is chess.WHITE
+            is_white_bool = bool(self) is Colors.WHITE
         else:
             is_white_bool = False
         return is_white_bool
@@ -73,7 +72,7 @@ class Winner(Enum):
         is_black_bool: bool
 
         if not self.is_none():
-            is_black_bool = bool(self) is chess.BLACK
+            is_black_bool = bool(self) is Colors.BLACK
         else:
             is_black_bool = False
         return is_black_bool
@@ -123,7 +122,7 @@ class OverEvent:
 
     how_over: HowOver = HowOver.DO_NOT_KNOW_OVER
     who_is_winner: Winner = Winner.NO_KNOWN_WINNER
-    termination: chess.Termination | None = None
+    termination: Enum | None = None # Optional termination reason
 
     def __post_init__(self) -> None:
         assert self.how_over in HowOver
@@ -139,7 +138,7 @@ class OverEvent:
     def becomes_over(
         self,
         how_over: HowOver,
-        termination: chess.Termination | None,
+        termination: Enum | None,
         who_is_winner: Winner = Winner.NO_KNOWN_WINNER,
     ) -> None:
         """Sets the `how_over` and `who_is_winner` attributes.
@@ -209,7 +208,7 @@ class OverEvent:
         """
         return self.how_over == HowOver.DRAW
 
-    def is_winner(self, player: chess.Color) -> bool:
+    def is_winner(self, player: Color) -> bool:
         """Checks if the specified player is the winner.
 
         Args:
@@ -221,15 +220,15 @@ class OverEvent:
         Raises:
             AssertionError: If the `player` argument is not a valid value from the `chess.Color` enum.
         """
-        assert player in {chess.WHITE, chess.BLACK}
+        assert player in {Colors.WHITE, Colors.BLACK}
 
         is_winner: bool
         if self.how_over == HowOver.WIN:
             is_winner = bool(
                 self.who_is_winner == Winner.WHITE
-                and player == chess.WHITE
+                and player == Colors.WHITE
                 or self.who_is_winner == Winner.BLACK
-                and player == chess.BLACK
+                and player == Colors.BLACK
             )
         else:
             is_winner = False
