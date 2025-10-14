@@ -17,7 +17,7 @@ WHITE: ColorIndex = 1
 BLACK: ColorIndex = 0
 
 
-class Color(Enum,int):
+class Color(int,Enum):
     """Represents the color of a player in a game."""
 
     WHITE = WHITE
