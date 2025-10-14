@@ -5,7 +5,8 @@ Module for handling game over events.
 from dataclasses import dataclass
 from enum import Enum
 
-from .game import Colors, Color
+from .game import Color
+
 
 class HowOver(Enum):
     """Represents the possible outcomes of a game.
@@ -38,8 +39,8 @@ class Winner(Enum):
         is_black() -> bool: Checks if the winner is black.
     """
 
-    WHITE = Colors.WHITE
-    BLACK = Colors.BLACK
+    WHITE = Color.WHITE
+    BLACK = Color.BLACK
     NO_KNOWN_WINNER = None
 
     def is_none(self) -> bool:
@@ -58,7 +59,7 @@ class Winner(Enum):
         """
         is_white_bool: bool
         if not self.is_none():
-            is_white_bool = bool(self) is Colors.WHITE
+            is_white_bool = self is Winner.WHITE
         else:
             is_white_bool = False
         return is_white_bool
@@ -72,7 +73,7 @@ class Winner(Enum):
         is_black_bool: bool
 
         if not self.is_none():
-            is_black_bool = bool(self) is Colors.BLACK
+            is_black_bool = self is Winner.BLACK
         else:
             is_black_bool = False
         return is_black_bool
@@ -122,7 +123,7 @@ class OverEvent:
 
     how_over: HowOver = HowOver.DO_NOT_KNOW_OVER
     who_is_winner: Winner = Winner.NO_KNOWN_WINNER
-    termination: Enum | None = None # Optional termination reason
+    termination: Enum | None = None  # Optional termination reason
 
     def __post_init__(self) -> None:
         assert self.how_over in HowOver
@@ -220,15 +221,15 @@ class OverEvent:
         Raises:
             AssertionError: If the `player` argument is not a valid value from the `chess.Color` enum.
         """
-        assert player in {Colors.WHITE, Colors.BLACK}
+        assert player in {Color.WHITE, Color.BLACK}
 
         is_winner: bool
         if self.how_over == HowOver.WIN:
             is_winner = bool(
                 self.who_is_winner == Winner.WHITE
-                and player == Colors.WHITE
+                and player == Color.WHITE
                 or self.who_is_winner == Winner.BLACK
-                and player == Colors.BLACK
+                and player == Color.BLACK
             )
         else:
             is_winner = False

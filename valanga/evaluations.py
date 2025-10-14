@@ -1,10 +1,17 @@
+"""
+Evaluation-related classes and types.
+"""
+
+from collections.abc import Hashable
 from dataclasses import dataclass
+from typing import Annotated
+
 from .over_event import OverEvent
 
-from typing import Hashable, Annotated
-
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
-
+type EvaluatorInput = Annotated[
+    object, "The input type for the evaluator, typically a tensor or array"
+]
 
 
 @dataclass
