@@ -12,9 +12,9 @@ dependencies = []
 
 
 [tool.pytest.ini_options]
-addopts = "--cov=anemone"
+addopts = "--cov=valanga"
 testpaths = [
-    "anemone",
+    "valanga",
     "tests"
 ]
 
