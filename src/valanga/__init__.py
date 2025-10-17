@@ -3,8 +3,8 @@
 from .evaluations import BoardEvaluation, FloatyBoardEvaluation, ForcedOutcome
 from .game import BLACK, WHITE, Color, ColorIndex, HasTurn, State, StateModifications
 from .over_event import OverEvent
-from .represention_for_evaluation import ContentRepresentation
 from .representation_factory import RepresentationFactory
+from .represention_for_evaluation import ContentRepresentation
 
 __all__ = [
     "ForcedOutcome",

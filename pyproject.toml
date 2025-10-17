@@ -11,27 +11,63 @@ dependencies = []
 
 
 
+
+[project.optional-dependencies]
+test = [
+    # Testing dependencies
+    "pytest>=8.4.1",
+    "coverage",
+    "pytest-cov>=6.0.0"
+]
+
+
+dev = [
+    # Development dependencies (includes test)
+    "tox>=4.30.2",
+    "types-PyYAML>=6.0.12.12",
+
+    # Linting & formatting
+    "ruff>=0.14.1",
+    "pylint>=3.3.8",
+    "black>=25.1.0",
+
+    # Type checking
+    "mypy>=1.18.2",
+    "pyright>=1.1.406",
+
+    # Building & publishing
+    "build",
+    "twine",
+
+    # Documentation
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-autodoc-typehints",
+
+    # Pre-commit hooks
+    "pre-commit"
+
+]
+
+
+
+
+
 [tool.pytest.ini_options]
 addopts = "--cov=valanga"
 testpaths = [
-    "valanga",
     "tests"
 ]
 
 [tool.mypy]
-mypy_path = "."
+python_version = "3.13"
+mypy_path = "src"
+namespace_packages = true
+explicit_package_bases = true
 ignore_missing_imports = true
 show_error_codes = true
 warn_unreachable = true
 no_implicit_reexport = true
-
-# Disallow dynamic typing
-#disallow_any_unimported = true
-#disallow_any_expr = true
-#disallow_any_decorated = true
-#disallow_any_generics = true
-#disallow_any_explicit = true
-#disallow_subclassing_any = true
 
 # Disallow untyped definitions and calls
 disallow_untyped_calls = true
@@ -51,28 +87,17 @@ warn_redundant_casts = true
 
 # Misc things
 strict_equality = true
-
-# Config file
 warn_unused_configs = true
-
-
 
 [[tool.mypy.overrides]]
 module = [
     "PySide6",
+    "PySide6.*"
 ]
 ignore_missing_imports = true
 follow_imports = 'skip'
 
 
-[[tool.mypy.overrides]]
-module = 'PySide6.*'
-follow_imports = 'skip'
-ignore_missing_imports = true
-
-
-[tool.mypy-PySide6]
-ignore_missing_imports = true
 
 
 [tool.ruff]
