@@ -15,19 +15,19 @@ type StateModifications = Annotated[
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
 
 
-class BranchKeyGeneratorP(Protocol):
+class BranchKeyGeneratorP[T_co: BranchKey](Protocol):
     """Protocol for a branch key generator that yields branch keys."""
 
-    all_generated_keys: list[BranchKey] | None
+    all_generated_keys: list[T_co] | None
 
     # whether to sort the branch keys by their respective uci for easy comparison of various implementations
     sort_branch_keys: bool = False
 
-    def __iter__(self) -> Iterator[BranchKey]:
+    def __iter__(self) -> Iterator[T_co]:
         """Returns an iterator over the branch keys."""
         ...
 
-    def __next__(self) -> BranchKey:
+    def __next__(self) -> T_co:
         """Returns the next branch key."""
         ...
 
@@ -39,7 +39,7 @@ class BranchKeyGeneratorP(Protocol):
         """
         ...
 
-    def get_all(self) -> list[BranchKey]:
+    def get_all(self) -> list[T_co]:
         """Returns a list of all branch keys."""
         ...
 
