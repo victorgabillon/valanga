@@ -1,7 +1,16 @@
 """Common types and utilities shared by multiple libraries."""
 
 from .evaluations import BoardEvaluation, FloatyBoardEvaluation, ForcedOutcome
-from .game import BLACK, WHITE, Color, ColorIndex, HasTurn, State, StateModifications, BranchKeyGeneratorP
+from .game import (
+    BLACK,
+    WHITE,
+    BranchKeyGeneratorP,
+    Color,
+    ColorIndex,
+    HasTurn,
+    State,
+    StateModifications,
+)
 from .over_event import OverEvent
 from .representation_factory import RepresentationFactory
 from .represention_for_evaluation import ContentRepresentation
