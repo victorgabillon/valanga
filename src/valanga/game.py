@@ -31,7 +31,7 @@ class BranchKeyGeneratorP[T_co: BranchKey](Protocol):
         """Returns the next branch key."""
         ...
 
-    def more_than_one_branch(self) -> bool:
+    def more_than_one(self) -> bool:
         """Checks if there is more than one branch available.
 
         Returns:
