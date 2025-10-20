@@ -5,6 +5,7 @@ from .game import (
     BLACK,
     WHITE,
     BranchKeyGeneratorP,
+    BranchKey,
     Color,
     ColorIndex,
     HasTurn,
@@ -30,4 +31,5 @@ __all__ = [
     "State",
     "StateModifications",
     "BranchKeyGeneratorP",
+    "BranchKey",
 ]

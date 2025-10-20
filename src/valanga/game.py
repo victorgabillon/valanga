@@ -15,7 +15,7 @@ type StateModifications = Annotated[
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
 
 
-class BranchKeyGeneratorP[T_co: BranchKey](Protocol):
+class BranchKeyGeneratorP[T_co: BranchKey = BranchKey](Protocol):
     """Protocol for a branch key generator that yields branch keys."""
 
     all_generated_keys: list[T_co] | None
