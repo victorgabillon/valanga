@@ -92,6 +92,10 @@ class State(Protocol):
         """
         ...
 
+    def copy(self) -> Self:
+        """Creates a copy of the state."""
+        ...
+
 
 type ColorIndex = Annotated[int, "1 for white, 0 for black"]
 
