@@ -15,6 +15,7 @@ from .game import (
 from .over_event import OverEvent
 from .representation_factory import RepresentationFactory
 from .represention_for_evaluation import ContentRepresentation
+from .progress_messsage import PlayerProgressMessage
 
 __all__ = [
     "ForcedOutcome",
@@ -32,4 +33,5 @@ __all__ = [
     "StateModifications",
     "BranchKeyGeneratorP",
     "BranchKey",
+    "PlayerProgressMessage",
 ]
