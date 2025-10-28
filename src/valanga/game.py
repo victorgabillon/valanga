@@ -5,7 +5,7 @@ Common types and utilities representing game objects shared by multiple librarie
 from enum import Enum
 from typing import Annotated, Hashable, Iterator, Protocol, Self
 
-type State = Annotated[object, "State of the game (evaluable)"]
+type StateTag = Annotated[Hashable, "A label or identifier for a state in a game"]
 
 type StateModifications = Annotated[
     object, "Modifications to the state between to time steps of the game"
@@ -48,6 +48,47 @@ class BranchKeyGeneratorP[T_co: BranchKey = BranchKey](Protocol):
 
         Returns:
             Self: A new instance of the legal move generator with the specified generated moves.
+        """
+        ...
+
+
+class State(Protocol):
+    """Protocol for a content object that has a tag."""
+
+    @property
+    def tag(self) -> StateTag:
+        """Returns the tag of the content.
+
+        Returns:
+            StateTag: The tag of the content.
+        """
+        ...
+
+    @property
+    def branch_keys(self) -> BranchKeyGeneratorP[BranchKey]:
+        """Returns the branch keys associated with the content.
+
+        Returns:
+            BranchKeyGeneratorP: The branch keys associated with the content.
+        """
+        ...
+
+    def branch_name_from_key(self, key: BranchKey) -> str:
+        """Returns the branch name corresponding to the given branch key.
+
+        Args:
+            key (BranchKey): The branch key.
+
+        Returns:
+            str: The branch name corresponding to the given branch key.
+        """
+        ...
+
+    def is_game_over(self) -> bool:
+        """Checks if the game represented by the content is over.
+
+        Returns:
+            bool: True if the game is over, False otherwise.
         """
         ...
 

@@ -4,8 +4,8 @@ from .evaluations import BoardEvaluation, FloatyBoardEvaluation, ForcedOutcome
 from .game import (
     BLACK,
     WHITE,
-    BranchKeyGeneratorP,
     BranchKey,
+    BranchKeyGeneratorP,
     Color,
     ColorIndex,
     HasTurn,
