@@ -11,6 +11,7 @@ from .game import (
     HasTurn,
     State,
     StateModifications,
+    StateTag,
 )
 from .over_event import OverEvent
 from .progress_messsage import PlayerProgressMessage
@@ -34,4 +35,5 @@ __all__ = [
     "BranchKeyGeneratorP",
     "BranchKey",
     "PlayerProgressMessage",
+    "StateTag",
 ]
