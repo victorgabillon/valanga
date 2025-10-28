@@ -4,7 +4,7 @@ Module for the ProgressMessage class.
 
 from dataclasses import dataclass
 
-import chess
+from .game import Color
 
 
 @dataclass
@@ -17,4 +17,4 @@ class PlayerProgressMessage:
     """
 
     progress_percent: int | None
-    player_color: chess.Color
+    player_color: Color
