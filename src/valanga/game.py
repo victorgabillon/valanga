@@ -3,8 +3,9 @@ Common types and utilities representing game objects shared by multiple librarie
 """
 
 from enum import Enum
-from typing import Annotated, Hashable, Iterator, Protocol, Self
+from typing import Annotated, Iterator, Protocol, Self
 
+from collections.abc import Hashable
 type StateTag = Annotated[Hashable, "A label or identifier for a state in a game"]
 
 type StateModifications = Annotated[
@@ -92,8 +93,17 @@ class State(Protocol):
         """
         ...
 
-    def copy(self) -> Self:
-        """Creates a copy of the state."""
+    def copy(self, stack: bool, deep_copy_legal_moves: bool = True) -> Self:
+        """
+        Create a copy of the current board.
+
+        Args:
+            stack (bool): Whether to copy the previous action stack as well. Important in some games.
+            deep_copy_legal_moves (bool): Whether to deep copy the legal moves generator.
+
+        Returns:
+            BoardChi: A new instance of the BoardChi class with the copied board.
+        """
         ...
 
 
