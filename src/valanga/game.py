@@ -106,6 +106,18 @@ class State(Protocol):
         """
         ...
 
+    def step(self, branch_key: BranchKey) -> StateModifications | None:
+        """Advances the state by applying the action corresponding to the given branch key.
+
+        Args:
+            branch_key (BranchKey): The branch key representing the action to be applied.
+
+        Returns:
+            StateModifications | None: The modifications to the state after applying the action, or None if the action is invalid.
+        """
+        ...
+
+
 
 type ColorIndex = Annotated[int, "1 for white, 0 for black"]
 
