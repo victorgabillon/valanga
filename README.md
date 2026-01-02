@@ -1,5 +1,13 @@
 # valanga
 
+![Python 3.13](https://img.shields.io/badge/python-3.13-blue?logo=python)
+[![Tests](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml/badge.svg?label=tests)](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml)
+[![mypy](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml/badge.svg?label=mypy)](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml)
+[![Ruff](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml/badge.svg?label=ruff)](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml)
+[![pylint](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml/badge.svg?label=pylint)](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml)
+[![Pyright](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml/badge.svg?label=pyright)](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml)
+[![License: GPL v3](https://img.shields.io/github/license/victorgabillon/valanga)](LICENSE)
+
 Shared Python types and lightweight utilities for describing turn-based games and their evaluations. The package exposes protocols for representing states, outcomes, and state representations that other libraries can build on.
 
 ## Key concepts
