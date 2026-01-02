@@ -4,8 +4,8 @@ Contains the definition of the ContentRepresentation protocol for content repres
 
 from typing import Protocol
 
-from .evaluations import EvaluatorInput
-from .game import Color
+from .evaluator_types import EvaluatorInput
+from .game import State
 
 
 class ContentRepresentation(Protocol):
@@ -14,12 +14,12 @@ class ContentRepresentation(Protocol):
     It is a function returning the proper input for evaluation by the content evaluator.
     """
 
-    def get_evaluator_input(self, color_to_play: Color) -> EvaluatorInput:
+    def get_evaluator_input(self, state: State) -> EvaluatorInput:
         """
-        Returns the evaluator input tensor for the given color to play.
+        Returns the evaluator input tensor for the content. Content representations have generally a compressed view and complemetary view of state info so to avoid redundancy and have all the necessary info we also give the state as input.
 
         Args:
-            color_to_play: The color to play, either chess.WHITE or chess.BLACK.
+            state: The current state of the game.
 
         Returns:
             The evaluator input tensor.
