@@ -16,7 +16,7 @@ type StateModifications = Annotated[
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
 
 
-T_co = TypeVar("T_co", bound=BranchKey, covariant=True)
+T_co = TypeVar("T_co", bound=BranchKey, covariant=True, default=BranchKey)
 
 
 class BranchKeyGeneratorP(Protocol[T_co]):
