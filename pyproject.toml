@@ -20,6 +20,16 @@ test = [
     "pytest-cov>=6.0.0"
 ]
 
+lint = [
+  "ruff>=0.14.10",
+  "pylint>=4.0.4",
+]
+
+typecheck = [
+  "mypy>=1.19.1",
+  "pyright[nodejs]>=1.1.408",
+]
+
 
 dev = [
     # Development dependencies (includes test)
@@ -151,3 +161,43 @@ reportUnusedImport = true
 reportMissingTypeStubs = false
 reportUnknownMemberType = false
 reportPrivateImportUsage = false
+
+
+#################### TOX ####################
+
+[tool.tox]
+min_version = "4.32.0"
+env_list = ["py313", "lint", "typecheck"]
+isolated_build = true
+
+[tool.tox.env_run_base]
+base_python = ["python3.13"]
+
+[tool.tox.env.py313]
+description = "Run tests"
+extras = ["test"]
+commands = [["pytest", "{posargs}"]]
+
+[tool.tox.env.lint]
+description = "ruff + pylint (fast, no package install)"
+package = "skip"
+deps = ["ruff>=0.14.10", "pylint>=4.0.4"]
+set_env = { PYTHONPATH = "{toxinidir}/src" }
+commands = [
+  ["python", "-m", "ruff", "check", "src", "tests"],
+  ["python", "-m", "ruff", "format", "--check", "src", "tests"],
+  ["python", "-m", "pylint", "src/valanga"],
+]
+
+[tool.tox.env.typecheck]
+description = "mypy + pyright (fast, no package install)"
+package = "skip"
+deps = ["mypy>=1.19.1", "pyright[nodejs]>=1.1.408"]
+set_env = { MYPYPATH = "{toxinidir}/src" }
+commands = [
+  ["python", "-m", "mypy", "--config-file", "pyproject.toml", "src/valanga"],
+  ["python", "-m", "pyright", "src/valanga"],
+]
+
+
+#################### END TOX ####################
