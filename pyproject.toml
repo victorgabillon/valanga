@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "valanga"
-version = "0.1.1"
+version = "0.1.2"
 description = "Shared types and utilities for evalaution"
 requires-python = ">=3.13"
 dependencies = []
@@ -33,7 +33,7 @@ dev = [
 
     # Type checking
     "mypy>=1.19.1",
-    "pyright>=1.1.407   ",
+    "pyright[nodejs]>=1.1.408   ",
 
     # Building & publishing
     "build",
