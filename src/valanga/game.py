@@ -2,10 +2,10 @@
 Common types and utilities representing game objects shared by multiple libraries.
 """
 
-from enum import Enum
-from typing import Annotated, Iterator, Protocol, Self
-
 from collections.abc import Hashable
+from enum import Enum
+from typing import Annotated, Iterator, Protocol, Self, Sequence, TypeVar
+
 type StateTag = Annotated[Hashable, "A label or identifier for a state in a game"]
 
 type StateModifications = Annotated[
@@ -16,13 +16,19 @@ type StateModifications = Annotated[
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
 
 
-class BranchKeyGeneratorP[T_co: BranchKey = BranchKey](Protocol):
-    """Protocol for a branch key generator that yields branch keys."""
+T_co = TypeVar("T_co", bound=BranchKey, covariant=True, default=BranchKey)
 
-    all_generated_keys: list[T_co] | None
+
+class BranchKeyGeneratorP(Protocol[T_co]):
+    """Protocol for a branch key generator that yields branch keys."""
 
     # whether to sort the branch keys by their respective uci for easy comparison of various implementations
     sort_branch_keys: bool = False
+
+    @property
+    def all_generated_keys(self) -> Sequence[T_co] | None:
+        """Returns all generated branch keys if available, otherwise None."""
+        ...
 
     def __iter__(self) -> Iterator[T_co]:
         """Returns an iterator over the branch keys."""
@@ -40,7 +46,7 @@ class BranchKeyGeneratorP[T_co: BranchKey = BranchKey](Protocol):
         """
         ...
 
-    def get_all(self) -> list[T_co]:
+    def get_all(self) -> Sequence[T_co]:
         """Returns a list of all branch keys."""
         ...
 
@@ -118,7 +124,6 @@ class State(Protocol):
         ...
 
 
-
 type ColorIndex = Annotated[int, "1 for white, 0 for black"]
 
 WHITE: ColorIndex = 1
@@ -143,3 +148,9 @@ class HasTurn(Protocol):
             ContentTag: The tag of the content.
         """
         ...
+
+
+class TurnState(State, HasTurn, Protocol):
+    """A State that also supports turn()."""
+
+    ...

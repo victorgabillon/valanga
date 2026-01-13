@@ -1,6 +1,6 @@
 """Common types and utilities shared by multiple libraries."""
 
-from .evaluations import BoardEvaluation, FloatyBoardEvaluation, ForcedOutcome
+from .evaluations import BoardEvaluation, EvalItem, FloatyStateEvaluation, ForcedOutcome
 from .game import (
     BLACK,
     WHITE,
@@ -12,6 +12,7 @@ from .game import (
     State,
     StateModifications,
     StateTag,
+    TurnState,
 )
 from .over_event import OverEvent
 from .progress_messsage import PlayerProgressMessage
@@ -20,14 +21,16 @@ from .represention_for_evaluation import ContentRepresentation
 
 __all__ = [
     "ForcedOutcome",
-    "FloatyBoardEvaluation",
+    "FloatyStateEvaluation",
     "BoardEvaluation",
+    "EvalItem",
     "OverEvent",
     "Color",
     "WHITE",
     "BLACK",
     "ColorIndex",
     "HasTurn",
+    "TurnState",
     "ContentRepresentation",
     "RepresentationFactory",
     "State",

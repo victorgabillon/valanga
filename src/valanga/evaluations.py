@@ -4,14 +4,30 @@ Evaluation-related classes and types.
 
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Annotated
+from typing import Annotated, Protocol
 
+from .game import BranchKey, State
 from .over_event import OverEvent
+from .represention_for_evaluation import ContentRepresentation
 
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
-type EvaluatorInput = Annotated[
-    object, "The input type for the evaluator, typically a tensor or array"
-]
+
+
+class EvalItem[StateT: State](Protocol):
+    """
+    The protocol for an evaluation item.
+    An evaluation item is something that has a state and optionally a representation of that state.
+    """
+
+    @property
+    def state(self) -> StateT:
+        """The state associated with this evaluation item."""
+        ...
+
+    @property
+    def state_representation(self) -> ContentRepresentation | None:
+        """The representation of the state associated with this evaluation item, if available."""
+        ...
 
 
 @dataclass
@@ -24,7 +40,7 @@ class ForcedOutcome:
     outcome: OverEvent
 
     # the line
-    line: list[ActionKey]
+    line: list[BranchKey]
 
 
 @dataclass
