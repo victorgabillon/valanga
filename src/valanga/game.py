@@ -6,6 +6,8 @@ from collections.abc import Hashable
 from enum import Enum
 from typing import Annotated, Iterator, Protocol, Self, Sequence, TypeVar
 
+type Seed = Annotated[int, "seed"]
+
 type StateTag = Annotated[Hashable, "A label or identifier for a state in a game"]
 
 type StateModifications = Annotated[

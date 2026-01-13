@@ -1,6 +1,6 @@
 """Common types and utilities shared by multiple libraries."""
 
-from .evaluations import BoardEvaluation, EvalItem, FloatyStateEvaluation, ForcedOutcome
+from .evaluations import EvalItem, FloatyStateEvaluation, ForcedOutcome, StateEvaluation
 from .game import (
     BLACK,
     WHITE,
@@ -22,7 +22,7 @@ from .represention_for_evaluation import ContentRepresentation
 __all__ = [
     "ForcedOutcome",
     "FloatyStateEvaluation",
-    "BoardEvaluation",
+    "StateEvaluation",
     "EvalItem",
     "OverEvent",
     "Color",
