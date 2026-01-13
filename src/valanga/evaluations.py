@@ -28,7 +28,7 @@ class ForcedOutcome:
 
 
 @dataclass
-class FloatyBoardEvaluation:
+class FloatyStateEvaluation:
     """
     The class to defines what is an evaluation of a board.
     By convention is it always evaluated from the view point of the white side.
@@ -39,4 +39,4 @@ class FloatyBoardEvaluation:
     value_white: float | None
 
 
-BoardEvaluation = FloatyBoardEvaluation | ForcedOutcome
+StateEvaluation = FloatyStateEvaluation | ForcedOutcome
