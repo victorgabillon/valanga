@@ -3,7 +3,7 @@ Common types and utilities representing game objects shared by multiple librarie
 """
 
 from collections.abc import Hashable
-from dataclasses import field
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Annotated, Iterator, Protocol, Self, Sequence, TypeVar
 
@@ -150,7 +150,7 @@ def _actions_history_factory() -> list[ActionKey]:
 
 
 
-
+@dataclass
 class StatePlusHistory[StateT: State=State]:
 
     @staticmethod
@@ -184,7 +184,7 @@ class TurnState(State, HasTurn, Protocol):
 
     ...
 
-
+@dataclass
 class TurnStatePlusHistory[StateT: TurnState=TurnState]:
 
     @staticmethod
