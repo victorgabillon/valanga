@@ -151,13 +151,13 @@ def _actions_history_factory() -> list[ActionKey]:
 
 
 @dataclass
-class StatePlusHistory[StateT: State=State]:
+class StatePlusHistory[StateT]:
 
     @staticmethod
     def _states_factory() -> list[StateT]:  
         return [] 
 
-    current_state: StateT
+    current_state_tag: StateTag
     historical_actions: list[ActionKey] = field(default_factory=_actions_history_factory)
     historical_states: list[StateT] = field(  
         default_factory=_states_factory
@@ -185,13 +185,13 @@ class TurnState(State, HasTurn, Protocol):
     ...
 
 @dataclass
-class TurnStatePlusHistory[StateT: TurnState=TurnState]:
+class TurnStatePlusHistory[StateT]:
 
     @staticmethod
     def _states_factory() -> list[StateT]:  
         return [] 
 
-    current_state: StateT
+    current_state: StateTag
     turn: Color
     historical_actions: list[ActionKey] = field(default_factory=_actions_history_factory)
     historical_states: list[StateT] = field(  
