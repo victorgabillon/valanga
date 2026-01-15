@@ -5,7 +5,7 @@ Common types and utilities representing game objects shared by multiple librarie
 from collections.abc import Hashable
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Annotated, Iterator, Protocol, Self, Sequence, TypeVar
+from typing import Annotated, Any, Iterator, Protocol, Self, Sequence, TypeVar
 
 type Seed = Annotated[int, "seed"]
 
@@ -185,7 +185,7 @@ class TurnState(State, HasTurn, Protocol):
     ...
 
 @dataclass
-class TurnStatePlusHistory[StateT]:
+class TurnStatePlusHistory[StateT=Any]:
 
     @staticmethod
     def _states_factory() -> list[StateT]:  
