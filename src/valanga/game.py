@@ -191,7 +191,7 @@ class TurnStatePlusHistory[StateT]:
     def _states_factory() -> list[StateT]:  
         return [] 
 
-    current_state: StateTag
+    current_state_tag: StateTag
     turn: Color
     historical_actions: list[ActionKey] = field(default_factory=_actions_history_factory)
     historical_states: list[StateT] = field(  
