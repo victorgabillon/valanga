@@ -19,26 +19,24 @@ type StateModifications = Annotated[
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
+T = TypeVar("T", bound=Hashable, covariant=True)
 
-T_co = TypeVar("T_co", bound=BranchKey, covariant=True, default=BranchKey)
-
-
-class BranchKeyGeneratorP(Protocol[T_co]):
+class BranchKeyGeneratorP(Protocol[T]):
     """Protocol for a branch key generator that yields branch keys."""
 
     # whether to sort the branch keys by their respective uci for easy comparison of various implementations
     sort_branch_keys: bool = False
 
     @property
-    def all_generated_keys(self) -> Sequence[T_co] | None:
+    def all_generated_keys(self) -> Sequence[T] | None:
         """Returns all generated branch keys if available, otherwise None."""
         ...
 
-    def __iter__(self) -> Iterator[T_co]:
+    def __iter__(self) -> Iterator[T]:
         """Returns an iterator over the branch keys."""
         ...
 
-    def __next__(self) -> T_co:
+    def __next__(self) -> T:
         """Returns the next branch key."""
         ...
 
@@ -50,7 +48,7 @@ class BranchKeyGeneratorP(Protocol[T_co]):
         """
         ...
 
-    def get_all(self) -> Sequence[T_co]:
+    def get_all(self) -> Sequence[T]:
         """Returns a list of all branch keys."""
         ...
 
