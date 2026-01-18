@@ -2,15 +2,13 @@
 Evaluation-related classes and types.
 """
 
-from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Annotated, Protocol
+from typing import Protocol
 
 from .game import BranchKey, State
 from .over_event import OverEvent
 from .represention_for_evaluation import ContentRepresentation
 
-type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
 
 class EvalItem[StateT: State](Protocol):

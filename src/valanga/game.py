@@ -3,8 +3,9 @@ Common types and utilities representing game objects shared by multiple librarie
 """
 
 from collections.abc import Hashable
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import Annotated, Iterator, Protocol, Self, Sequence, TypeVar
+from typing import Annotated, Any, Iterator, Protocol, Self, Sequence, TypeVar
 
 type Seed = Annotated[int, "seed"]
 
@@ -16,27 +17,26 @@ type StateModifications = Annotated[
 
 
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
+type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
+T = TypeVar("T", bound=Hashable, covariant=True)
 
-T_co = TypeVar("T_co", bound=BranchKey, covariant=True, default=BranchKey)
-
-
-class BranchKeyGeneratorP(Protocol[T_co]):
+class BranchKeyGeneratorP(Protocol[T]):
     """Protocol for a branch key generator that yields branch keys."""
 
     # whether to sort the branch keys by their respective uci for easy comparison of various implementations
     sort_branch_keys: bool = False
 
     @property
-    def all_generated_keys(self) -> Sequence[T_co] | None:
+    def all_generated_keys(self) -> Sequence[T] | None:
         """Returns all generated branch keys if available, otherwise None."""
         ...
 
-    def __iter__(self) -> Iterator[T_co]:
+    def __iter__(self) -> Iterator[T]:
         """Returns an iterator over the branch keys."""
         ...
 
-    def __next__(self) -> T_co:
+    def __next__(self) -> T:
         """Returns the next branch key."""
         ...
 
@@ -48,7 +48,7 @@ class BranchKeyGeneratorP(Protocol[T_co]):
         """
         ...
 
-    def get_all(self) -> Sequence[T_co]:
+    def get_all(self) -> Sequence[T]:
         """Returns a list of all branch keys."""
         ...
 
@@ -149,6 +149,31 @@ class Color(int, Enum):
     BLACK = BLACK
 
 
+
+
+
+def _actions_history_factory() -> list[ActionKey]:
+    return []
+
+
+
+
+@dataclass
+class StatePlusHistory[StateT]:
+
+    @staticmethod
+    def _states_factory() -> list[StateT]:  
+        return [] 
+
+    current_state_tag: StateTag
+    historical_actions: list[ActionKey] = field(default_factory=_actions_history_factory)
+    historical_states: list[StateT] = field(  
+        default_factory=_states_factory
+    )
+
+
+
+
 class HasTurn(Protocol):
     """Protocol for a content object that has a tag."""
 
@@ -166,3 +191,17 @@ class TurnState(State, HasTurn, Protocol):
     """A State that also supports turn()."""
 
     ...
+
+@dataclass
+class TurnStatePlusHistory[StateT=Any]:
+
+    @staticmethod
+    def _states_factory() -> list[StateT]:  
+        return [] 
+
+    current_state_tag: StateTag
+    turn: Color
+    historical_actions: list[ActionKey] = field(default_factory=_actions_history_factory)
+    historical_states: list[StateT] = field(  
+        default_factory=_states_factory
+    )
