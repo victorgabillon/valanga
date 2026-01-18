@@ -10,7 +10,6 @@ from .over_event import OverEvent
 from .represention_for_evaluation import ContentRepresentation
 
 
-
 class EvalItem[StateT: State](Protocol):
     """
     The protocol for an evaluation item.
