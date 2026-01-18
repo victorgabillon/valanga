@@ -136,6 +136,14 @@ class State(Protocol):
         """
         ...
 
+    def pprint(self) -> str:
+        """Returns a pretty-printed string representation of the content.
+
+        Returns:
+            str: A pretty-printed string representation of the content.
+        """
+        ...
+
 
 type ColorIndex = Annotated[int, "1 for white, 0 for black"]
 
