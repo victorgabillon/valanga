@@ -15,8 +15,11 @@ type StateModifications = Annotated[
     object, "Modifications to the state between to time steps of the game"
 ]  # used for time and memory optimisation
 
+type BranchName = Annotated[str, "A human-readable name for a branch of a state"]
 
 type BranchKey = Annotated[Hashable, "A label or identifier for a branch in a tree"]
+type ActionName = Annotated[str, "A human-readable name for an action of a state"]
+
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
 T_co = TypeVar("T_co", bound=Hashable, covariant=True)

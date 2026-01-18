@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from typing import Mapping, Protocol
 
 from valanga.evaluations import StateEvaluation
-from valanga.game import BranchKey, Seed, State
+from valanga.game import BranchKey, BranchName, Seed, State
 
 
 @dataclass(frozen=True, slots=True)
@@ -22,10 +22,10 @@ class BranchPolicy:
 class Recommendation:
     """A recommendation for a specific branch in a tree node."""
 
-    recommended_key: BranchKey
+    recommended_key: BranchName
     evaluation: StateEvaluation | None = None
     policy: BranchPolicy | None = None
-    branch_evals: Mapping[BranchKey, StateEvaluation] | None = None
+    branch_evals: Mapping[BranchName, StateEvaluation] | None = None
 
 
 class BranchSelector(Protocol):
