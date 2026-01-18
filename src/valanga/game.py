@@ -93,6 +93,16 @@ class State(Protocol):
         """
         ...
 
+    def branch_key_from_name(self, name: str) -> BranchKey:
+        """Returns the branch key corresponding to the given branch name.
+
+        Args:
+            name (str): The branch name.
+        Returns:
+            BranchKey: The branch key corresponding to the given branch name.
+        """
+        ...
+
     def is_game_over(self) -> bool:
         """Checks if the game represented by the content is over.
 
