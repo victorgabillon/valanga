@@ -4,12 +4,17 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "valanga"
-version = "0.1.3"
-description = "Shared types and utilities for evalaution"
+version = "0.1.4"
+description = "Shared types and utilities for evaluation"
 requires-python = ">=3.13"
 dependencies = []
-
-
+readme = "README.md"
+license = { file = "LICENSE"} 
+authors = [{ name="Victor Gabillon", email="victorgabillon@gmail.com" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.13",
+]
 
 
 [project.optional-dependencies]
@@ -43,7 +48,7 @@ dev = [
 
     # Type checking
     "mypy>=1.19.1",
-    "pyright[nodejs]>=1.1.408   ",
+    "pyright[nodejs]>=1.1.408",
 
     # Building & publishing
     "build",
@@ -167,7 +172,7 @@ reportPrivateImportUsage = false
 
 [tool.tox]
 min_version = "4.32.0"
-env_list = ["py313", "lint", "typecheck"]
+env_list = ["py313", "lint", "typecheck", "build"]
 isolated_build = true
 
 [tool.tox.env_run_base]
@@ -198,6 +203,12 @@ commands = [
   ["python", "-m", "mypy", "--config-file", "pyproject.toml", "src/valanga"],
   ["python", "-m", "pyright", "src/valanga"],
 ]
+
+
+[tool.tox.env.build]
+deps = ["build"]
+commands = [["python", "-m", "build"]]
+
 
 
 #################### END TOX ####################

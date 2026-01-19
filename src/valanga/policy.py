@@ -22,7 +22,7 @@ class BranchPolicy:
 class Recommendation:
     """A recommendation for a specific branch in a tree node."""
 
-    recommended_key: BranchName
+    recommended_name: BranchName
     evaluation: StateEvaluation | None = None
     policy: BranchPolicy | None = None
     branch_evals: Mapping[BranchName, StateEvaluation] | None = None
