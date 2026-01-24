@@ -9,42 +9,44 @@ from .game import State, StateModifications
 from .represention_for_evaluation import ContentRepresentation
 
 
-class CreateFromState[T: ContentRepresentation](Protocol):
+class CreateFromState[StateT: State, RepT: ContentRepresentation](Protocol):
     """
     Protocol for creating a state representation from a state.
     """
 
-    def __call__(self, state: State) -> T: ...
+    def __call__(self, state: StateT) -> RepT: ...
 
 
-class CreateFromStateAndModifications[T: ContentRepresentation](Protocol):
+class CreateFromStateAndModifications[StateT: State, RepT: ContentRepresentation](
+    Protocol
+):
     """
     Protocol for creating a state representation from a state and modifications.
     """
 
     def __call__(
         self,
-        state: State,
+        state: StateT,
         state_modifications: StateModifications,
-        previous_state_representation: T,
-    ) -> T: ...
+        previous_state_representation: RepT,
+    ) -> RepT: ...
 
 
 @dataclass
-class RepresentationFactory[T: ContentRepresentation = ContentRepresentation]:
+class RepresentationFactory[StateT: State, RepT: ContentRepresentation]:
     """
     Factory class for creating state representations.
     """
 
-    create_from_state: CreateFromState[T]
-    create_from_state_and_modifications: CreateFromStateAndModifications[T]
+    create_from_state: CreateFromState[StateT, RepT]
+    create_from_state_and_modifications: CreateFromStateAndModifications[StateT, RepT]
 
     def create_from_transition(
         self,
-        state: State,
-        previous_state_representation: T | None,
+        state: StateT,
+        previous_state_representation: RepT | None,
         modifications: StateModifications | None,
-    ) -> T:
+    ) -> RepT:
         """
         Create a Generic T_StateRepresentation object from a transition.
 
