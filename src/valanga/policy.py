@@ -28,10 +28,10 @@ class Recommendation:
     branch_evals: Mapping[BranchName, StateEvaluation] | None = None
 
 
-class BranchSelector(Protocol):
+class BranchSelector[StateT: State](Protocol):
     """Protocol for a branch selector."""
 
-    def recommend(self, state: State, seed: Seed) -> Recommendation:
+    def recommend(self, state: StateT, seed: Seed) -> Recommendation:
         """Given a state and a seed, recommends a branch to take.
         Args:
             state (State): The current state of the game.
