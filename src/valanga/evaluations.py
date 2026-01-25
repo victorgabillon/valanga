@@ -5,6 +5,8 @@ Evaluation-related classes and types.
 from dataclasses import dataclass
 from typing import Protocol
 
+from valanga.evaluator_types import EvaluatorInput
+
 from .game import BranchKey, State
 from .over_event import OverEvent
 from .represention_for_evaluation import ContentRepresentation
@@ -22,7 +24,9 @@ class EvalItem[StateT: State](Protocol):
         ...
 
     @property
-    def state_representation(self) -> ContentRepresentation | None:
+    def state_representation(
+        self,
+    ) -> ContentRepresentation[StateT, EvaluatorInput] | None:
         """The representation of the state associated with this evaluation item, if available."""
         ...
 
