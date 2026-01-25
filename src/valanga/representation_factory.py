@@ -5,18 +5,20 @@ Factory for creating content representations from game states and state modifica
 from dataclasses import dataclass
 from typing import Protocol
 
+from valanga.represention_for_evaluation import ContentRepresentation
+
 from .game import State
 
 
-class CreateFromState[StateT: State, RepT](Protocol):
+class CreateFromState[StateT: State, EvalIn](Protocol):
     """
     Protocol for creating a state representation from a state.
     """
 
-    def __call__(self, state: StateT) -> RepT: ...
+    def __call__(self, state: StateT) -> ContentRepresentation[StateT, EvalIn]: ...
 
 
-class CreateFromStateAndModifications[StateT: State, StateModT, RepT](Protocol):
+class CreateFromStateAndModifications[StateT: State, EvalIn, StateModT](Protocol):
     """
     Protocol for creating a state representation from a state and modifications.
     """
@@ -25,29 +27,29 @@ class CreateFromStateAndModifications[StateT: State, StateModT, RepT](Protocol):
         self,
         state: StateT,
         state_modifications: StateModT,
-        previous_state_representation: RepT,
-    ) -> RepT: ...
+        previous_state_representation: ContentRepresentation[StateT, EvalIn],
+    ) -> ContentRepresentation[StateT, EvalIn]: ...
 
 
 @dataclass
-class RepresentationFactory[StateT: State, RepT, StateModT]:
+class RepresentationFactory[StateT: State, EvalIn, StateModT]:
     """Factory for creating content representations from states and state modifications.
     Attributes:
         create_from_state: Function to create a content representation from a state.
         create_from_state_and_modifications: Function to create a content representation from a state and state modifications.
     """
 
-    create_from_state: CreateFromState[StateT, RepT]
+    create_from_state: CreateFromState[StateT, EvalIn]
     create_from_state_and_modifications: CreateFromStateAndModifications[
-        StateT, StateModT, RepT
+        StateT, EvalIn, StateModT
     ]
 
     def create_from_transition(
         self,
         state: StateT,
-        previous_state_representation: RepT | None,
+        previous_state_representation: ContentRepresentation[StateT, EvalIn] | None,
         modifications: StateModT | None,
-    ) -> RepT:
+    ) -> ContentRepresentation[StateT, EvalIn]:
         """Creates a content representation from a state transition.
         Args:
             state: The current state of the game.
