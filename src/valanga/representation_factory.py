@@ -30,7 +30,7 @@ class CreateFromStateAndModifications[StateT: State, StateModT, RepT](Protocol):
 
 
 @dataclass
-class RepresentationFactory[StateT: State, StateModT, RepT]:
+class RepresentationFactory[StateT: State, RepT, StateModT]:
     """Factory for creating content representations from states and state modifications.
     Attributes:
         create_from_state: Function to create a content representation from a state.
