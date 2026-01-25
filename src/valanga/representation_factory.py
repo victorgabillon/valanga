@@ -3,19 +3,31 @@ Factory for creating content representations from game states and state modifica
 """
 
 from dataclasses import dataclass
-from typing import Callable, TypeVar
+from typing import Protocol
 
 from .game import State, StateModifications
 from .represention_for_evaluation import ContentRepresentation
 
-StateT = TypeVar("StateT", bound=State)
-EvalIn = TypeVar("EvalIn")
 
-CreateFromState = Callable[[StateT], ContentRepresentation[StateT, EvalIn]]
-CreateFromStateAndMods = Callable[
-    [StateT, StateModifications, ContentRepresentation[StateT, EvalIn]],
-    ContentRepresentation[StateT, EvalIn],
-]
+class CreateFromState[StateT: State, EvalIn](Protocol):
+    """
+    Protocol for creating a state representation from a state.
+    """
+
+    def __call__(self, state: StateT) -> ContentRepresentation[StateT, EvalIn]: ...
+
+
+class CreateFromStateAndModifications[StateT: State, EvalIn](Protocol):
+    """
+    Protocol for creating a state representation from a state and modifications.
+    """
+
+    def __call__(
+        self,
+        state: StateT,
+        state_modifications: StateModifications,
+        previous_state_representation: ContentRepresentation[StateT, EvalIn],
+    ) -> ContentRepresentation[StateT, EvalIn]: ...
 
 
 @dataclass
@@ -27,7 +39,7 @@ class RepresentationFactory[StateT: State, EvalIn]:
     """
 
     create_from_state: CreateFromState[StateT, EvalIn]
-    create_from_state_and_modifications: CreateFromStateAndMods[StateT, EvalIn]
+    create_from_state_and_modifications: CreateFromStateAndModifications[StateT, EvalIn]
 
     def create_from_transition(
         self,
