@@ -5,7 +5,7 @@ Factory for creating content representations from game states and state modifica
 from dataclasses import dataclass
 from typing import Protocol
 
-from .game import State, StateModifications
+from .game import State
 from .represention_for_evaluation import ContentRepresentation
 
 
@@ -17,7 +17,7 @@ class CreateFromState[StateT: State, EvalIn](Protocol):
     def __call__(self, state: StateT) -> ContentRepresentation[StateT, EvalIn]: ...
 
 
-class CreateFromStateAndModifications[StateT: State, EvalIn](Protocol):
+class CreateFromStateAndModifications[StateT: State, EvalIn, StateModT](Protocol):
     """
     Protocol for creating a state representation from a state and modifications.
     """
@@ -25,13 +25,13 @@ class CreateFromStateAndModifications[StateT: State, EvalIn](Protocol):
     def __call__(
         self,
         state: StateT,
-        state_modifications: StateModifications,
+        state_modifications: StateModT,
         previous_state_representation: ContentRepresentation[StateT, EvalIn],
     ) -> ContentRepresentation[StateT, EvalIn]: ...
 
 
 @dataclass
-class RepresentationFactory[StateT: State, EvalIn]:
+class RepresentationFactory[StateT: State, EvalIn, StateModT]:
     """Factory for creating content representations from states and state modifications.
     Attributes:
         create_from_state: Function to create a content representation from a state.
@@ -39,13 +39,15 @@ class RepresentationFactory[StateT: State, EvalIn]:
     """
 
     create_from_state: CreateFromState[StateT, EvalIn]
-    create_from_state_and_modifications: CreateFromStateAndModifications[StateT, EvalIn]
+    create_from_state_and_modifications: CreateFromStateAndModifications[
+        StateT, EvalIn, StateModT
+    ]
 
     def create_from_transition(
         self,
         state: StateT,
         previous_state_representation: ContentRepresentation[StateT, EvalIn] | None,
-        modifications: StateModifications | None,
+        modifications: StateModT | None,
     ) -> ContentRepresentation[StateT, EvalIn]:
         """Creates a content representation from a state transition.
         Args:
