@@ -28,13 +28,13 @@ class Recommendation:
     branch_evals: Mapping[BranchName, StateEvaluation] | None = None
 
 
-StateT = TypeVar("StateT", bound=State, contravariant=True)
+StateT_contra = TypeVar("StateT_contra", bound=State, contravariant=True)
 
 
-class BranchSelector(Protocol[StateT]):
+class BranchSelector(Protocol[StateT_contra]):
     """Protocol for a branch selector."""
 
-    def recommend(self, state: StateT, seed: Seed) -> Recommendation:
+    def recommend(self, state: StateT_contra, seed: Seed) -> Recommendation:
         """Given a state and a seed, recommends a branch to take.
         Args:
             state (State): The current state of the game.
