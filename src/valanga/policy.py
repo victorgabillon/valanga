@@ -3,7 +3,7 @@ Policy-related classes and protocols for branch selection in game trees.
 """
 
 from dataclasses import dataclass
-from typing import Mapping, Protocol
+from typing import Mapping, Protocol, TypeVar
 
 from valanga.evaluations import StateEvaluation
 from valanga.game import BranchKey, BranchName, Seed, State
@@ -28,7 +28,10 @@ class Recommendation:
     branch_evals: Mapping[BranchName, StateEvaluation] | None = None
 
 
-class BranchSelector[StateT: State](Protocol):
+StateT = TypeVar("StateT", bound=State, contravariant=True)
+
+
+class BranchSelector(Protocol[StateT]):
     """Protocol for a branch selector."""
 
     def recommend(self, state: StateT, seed: Seed) -> Recommendation:
