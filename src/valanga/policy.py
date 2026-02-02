@@ -3,11 +3,12 @@ Policy-related classes and protocols for branch selection in game trees.
 """
 
 from dataclasses import dataclass
-from typing import Mapping, Protocol, TypeVar
+from typing import Callable, Mapping, Protocol, TypeVar
 
 from valanga.evaluations import StateEvaluation
 from valanga.game import BranchKey, BranchName, Seed, State
 
+NotifyProgressCallable =Callable[[int], None] | None
 
 @dataclass(frozen=True, slots=True)
 class BranchPolicy:
@@ -34,7 +35,7 @@ StateT_contra = TypeVar("StateT_contra", bound=State, contravariant=True)
 class BranchSelector(Protocol[StateT_contra]):
     """Protocol for a branch selector."""
 
-    def recommend(self, state: StateT_contra, seed: Seed) -> Recommendation:
+    def recommend(self, state: StateT_contra, seed: Seed, notify_progress: NotifyProgressCallable | None = None) -> Recommendation:
         """Given a state and a seed, recommends a branch to take.
         Args:
             state (State): The current state of the game.
