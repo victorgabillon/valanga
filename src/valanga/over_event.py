@@ -1,9 +1,7 @@
-"""
-Module for handling game over events.
-"""
+"""Module for handling game over events."""
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, StrEnum
 
 from .game import Color
 
@@ -15,6 +13,7 @@ class HowOver(Enum):
         WIN (int): Indicates a win.
         DRAW (int): Indicates a draw.
         DO_NOT_KNOW_OVER (int): Indicates that the outcome is unknown.
+
     """
 
     WIN = 1
@@ -37,6 +36,7 @@ class Winner(Enum):
         is_none() -> bool: Checks if the winner is None.
         is_white() -> bool: Checks if the winner is white.
         is_black() -> bool: Checks if the winner is black.
+
     """
 
     WHITE = Color.WHITE
@@ -48,6 +48,7 @@ class Winner(Enum):
 
         Returns:
             bool: True if the winner is NO_KNOWN_WINNER, False otherwise.
+
         """
         return self is Winner.NO_KNOWN_WINNER
 
@@ -56,12 +57,10 @@ class Winner(Enum):
 
         Returns:
             bool: True if the winner is white, False otherwise.
+
         """
         is_white_bool: bool
-        if not self.is_none():
-            is_white_bool = self is Winner.WHITE
-        else:
-            is_white_bool = False
+        is_white_bool = self is Winner.WHITE if not self.is_none() else False
         return is_white_bool
 
     def is_black(self) -> bool:
@@ -69,17 +68,15 @@ class Winner(Enum):
 
         Returns:
             bool: True if the winner is black, False otherwise.
+
         """
         is_black_bool: bool
 
-        if not self.is_none():
-            is_black_bool = self is Winner.BLACK
-        else:
-            is_black_bool = False
+        is_black_bool = self is Winner.BLACK if not self.is_none() else False
         return is_black_bool
 
 
-class OverTags(str, Enum):
+class OverTags(StrEnum):
     """Represents the possible tags for game over events.
 
     Attributes:
@@ -87,6 +84,7 @@ class OverTags(str, Enum):
         TAG_WIN_BLACK (str): Tag indicating a win for the black player.
         TAG_DRAW (str): Tag indicating a draw.
         TAG_DO_NOT_KNOW (str): Tag indicating an unknown outcome.
+
     """
 
     TAG_WIN_WHITE = "Win-Wh"
@@ -119,6 +117,7 @@ class OverEvent:
         is_winner: Checks if the specified player is the winner.
         print_info: Prints information about the `OverEvent` object.
         test: Performs tests on the `OverEvent` object.
+
     """
 
     how_over: HowOver = HowOver.DO_NOT_KNOW_OVER
@@ -147,6 +146,7 @@ class OverEvent:
         Args:
             how_over (HowOver): The way the game ended.
             who_is_winner (Winner, optional): The winner of the game. Defaults to `Winner.NO_KNOWN_WINNER`.
+
         """
         self.how_over = how_over
         self.who_is_winner = who_is_winner
@@ -160,6 +160,7 @@ class OverEvent:
 
         Raises:
             Exception: If the winner is not properly defined.
+
         """
         over_tag: OverTags
         if self.how_over == HowOver.WIN:
@@ -182,6 +183,7 @@ class OverEvent:
 
         Raises:
             Exception: Always raises an exception.
+
         """
         raise ValueError("Nooooooooooo  in over ebvent.py")
 
@@ -190,6 +192,7 @@ class OverEvent:
 
         Returns:
             bool: True if the game is over, False otherwise.
+
         """
         return self.how_over in {HowOver.WIN, HowOver.DRAW}
 
@@ -198,6 +201,7 @@ class OverEvent:
 
         Returns:
             bool: True if the game ended with a win, False otherwise.
+
         """
         return self.how_over == HowOver.WIN
 
@@ -206,6 +210,7 @@ class OverEvent:
 
         Returns:
             bool: True if the game ended with a draw, False otherwise.
+
         """
         return self.how_over == HowOver.DRAW
 
@@ -220,17 +225,19 @@ class OverEvent:
 
         Raises:
             AssertionError: If the `player` argument is not a valid value from the `chess.Color` enum.
+
         """
         assert player in {Color.WHITE, Color.BLACK}
 
         is_winner: bool
         if self.how_over == HowOver.WIN:
-            is_winner = bool(
-                self.who_is_winner == Winner.WHITE
-                and player == Color.WHITE
-                or self.who_is_winner == Winner.BLACK
-                and player == Color.BLACK
-            )
+            winner_color = {
+                Winner.WHITE: Color.WHITE,
+                Winner.BLACK: Color.BLACK,
+            }.get(self.who_is_winner)
+
+            is_winner = player == winner_color
+
         else:
             is_winner = False
         return is_winner

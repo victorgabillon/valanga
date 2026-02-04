@@ -26,7 +26,7 @@ test = [
 ]
 
 lint = [
-  "ruff>=0.14.10",
+  "ruff>=0.15.0",
   "pylint>=4.0.4",
 ]
 
@@ -42,7 +42,7 @@ dev = [
     "types-PyYAML>=6.0.12.12",
 
     # Linting & formatting
-    "ruff>=0.14.10",
+    "ruff>=0.15.0",
     "pylint>=4.0.4",
     "black>=25.12.0",
 
@@ -120,10 +120,10 @@ line-length = 88
 target-version = "py313"
 
 # Enable import sorting (alphabetical + group order)
-lint.select = ["I", "F", "E", "B", "TCH"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
+lint.select = ["I", "F", "E", "B", "TCH","UP","SIM", "C4", "RUF", "PL","RET","ARG","D","ANN"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
 
 # Allow auto-fixing for imports and type-checking imports
-lint.fixable = ["I", "TCH", "F401"]
+lint.fixable = ["I", "TCH", "F401", "RUF","PL","D"]
 
 # Ignore rules you don't care about
 lint.ignore = [ "E501"]
@@ -186,7 +186,7 @@ commands = [["pytest", "{posargs}"]]
 [tool.tox.env.lint]
 description = "ruff + pylint (fast, no package install)"
 package = "skip"
-deps = ["ruff>=0.14.10", "pylint>=4.0.4"]
+deps = ["ruff>=0.15.0", "pylint>=4.0.4"]
 set_env = { PYTHONPATH = "{toxinidir}/src" }
 commands = [
   ["python", "-m", "ruff", "check", "src", "tests"],

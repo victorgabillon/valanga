@@ -1,6 +1,4 @@
-"""
-Evaluation-related classes and types.
-"""
+"""Evaluation-related classes and types."""
 
 from dataclasses import dataclass
 from typing import Protocol
@@ -13,8 +11,7 @@ from .represention_for_evaluation import ContentRepresentation
 
 
 class EvalItem[StateT: State](Protocol):
-    """
-    The protocol for an evaluation item.
+    """The protocol for an evaluation item.
     An evaluation item is something that has a state and optionally a representation of that state.
     """
 
@@ -33,9 +30,7 @@ class EvalItem[StateT: State](Protocol):
 
 @dataclass
 class ForcedOutcome:
-    """
-    The class
-    """
+    """The class."""
 
     # The forced outcome with optimal play by both sides.
     outcome: OverEvent
@@ -46,8 +41,7 @@ class ForcedOutcome:
 
 @dataclass
 class FloatyStateEvaluation:
-    """
-    The class to defines what is an evaluation of a board.
+    """The class to defines what is an evaluation of a board.
     By convention is it always evaluated from the view point of the white side.
     """
 

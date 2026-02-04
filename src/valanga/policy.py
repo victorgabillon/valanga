@@ -1,9 +1,8 @@
-"""
-Policy-related classes and protocols for branch selection in game trees.
-"""
+"""Policy-related classes and protocols for branch selection in game trees."""
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Mapping, Protocol, TypeVar
+from typing import Protocol, TypeVar
 
 from valanga.evaluations import StateEvaluation
 from valanga.game import BranchKey, BranchName, Seed, State
@@ -11,9 +10,7 @@ from valanga.game import BranchKey, BranchName, Seed, State
 
 @dataclass(frozen=True, slots=True)
 class BranchPolicy:
-    """
-    Represents a probability distribution over branches.
-    """
+    """Represents a probability distribution over branches."""
 
     probs: Mapping[BranchKey, float]  # should sum to ~1.0
 
@@ -36,10 +33,13 @@ class BranchSelector(Protocol[StateT_contra]):
 
     def recommend(self, state: StateT_contra, seed: Seed) -> Recommendation:
         """Given a state and a seed, recommends a branch to take.
+
         Args:
             state (State): The current state of the game.
             seed (Seed): A seed for any randomness involved in the selection.
+
         Returns:
             Recommendation: The recommended branch to take.
+
         """
         ...

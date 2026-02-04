@@ -1,11 +1,9 @@
-"""
-Common types and utilities representing game objects shared by multiple libraries.
-"""
+"""Common types and utilities representing game objects shared by multiple libraries."""
 
-from collections.abc import Hashable
+from collections.abc import Hashable, Iterator, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Annotated, Any, Iterator, Protocol, Self, Sequence, TypeVar
+from typing import Annotated, Any, Protocol, Self, TypeVar
 
 type Seed = Annotated[int, "seed"]
 
@@ -49,6 +47,7 @@ class BranchKeyGeneratorP(Protocol[T_co]):
 
         Returns:
             bool: True if there is more than one branch, False otherwise.
+
         """
         ...
 
@@ -61,6 +60,7 @@ class BranchKeyGeneratorP(Protocol[T_co]):
 
         Returns:
             Self: A new instance of the legal move generator with the specified generated moves.
+
         """
         ...
 
@@ -74,6 +74,7 @@ class State(Protocol):
 
         Returns:
             StateTag: The tag of the content.
+
         """
         ...
 
@@ -83,6 +84,7 @@ class State(Protocol):
 
         Returns:
             BranchKeyGeneratorP: The branch keys associated with the content.
+
         """
         ...
 
@@ -94,6 +96,7 @@ class State(Protocol):
 
         Returns:
             str: The branch name corresponding to the given branch key.
+
         """
         ...
 
@@ -102,8 +105,10 @@ class State(Protocol):
 
         Args:
             name (str): The branch name.
+
         Returns:
             BranchKey: The branch key corresponding to the given branch name.
+
         """
         ...
 
@@ -112,12 +117,12 @@ class State(Protocol):
 
         Returns:
             bool: True if the game is over, False otherwise.
+
         """
         ...
 
     def copy(self, stack: bool, deep_copy_legal_moves: bool = True) -> Self:
-        """
-        Create a copy of the current board.
+        """Create a copy of the current board.
 
         Args:
             stack (bool): Whether to copy the previous action stack as well. Important in some games.
@@ -125,6 +130,7 @@ class State(Protocol):
 
         Returns:
             BoardChi: A new instance of the BoardChi class with the copied board.
+
         """
         ...
 
@@ -136,6 +142,7 @@ class State(Protocol):
 
         Returns:
             StateModifications | None: The modifications to the state after applying the action, or None if the action is invalid.
+
         """
         ...
 
@@ -144,6 +151,7 @@ class State(Protocol):
 
         Returns:
             str: A pretty-printed string representation of the content.
+
         """
         ...
 
@@ -189,6 +197,7 @@ class HasTurn(Protocol):
 
         Returns:
             ContentTag: The tag of the content.
+
         """
         ...
 

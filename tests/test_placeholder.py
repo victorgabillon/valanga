@@ -1,10 +1,10 @@
 """Placeholder test file."""
 
+import valanga
+
 
 def test_package_imports():
     """Verify the package can be imported."""
-    import valanga
-
     assert valanga is not None
 
 

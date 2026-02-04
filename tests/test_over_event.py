@@ -1,3 +1,5 @@
+"""Tests for valanga.over_event module."""
+
 import pytest
 
 from valanga.game import Color
@@ -12,6 +14,7 @@ from valanga.over_event import HowOver, OverEvent, OverTags, Winner
     ],
 )
 def test_get_over_tag_win_outcomes(who, expected):
+    """Test get_over_tag for win outcomes."""
     event = OverEvent(how_over=HowOver.WIN, who_is_winner=who)
 
     assert event.get_over_tag() == expected
@@ -22,6 +25,7 @@ def test_get_over_tag_win_outcomes(who, expected):
 
 @pytest.mark.parametrize("winner", [Winner.WHITE, Winner.BLACK])
 def test_is_winner_matches_color(winner):
+    """Test is_winner method for different winners."""
     event = OverEvent(how_over=HowOver.WIN, who_is_winner=winner)
 
     assert event.is_winner(Color.WHITE) is (winner == Winner.WHITE)
@@ -36,6 +40,7 @@ def test_is_winner_matches_color(winner):
     ],
 )
 def test_get_over_tag_draw_and_unknown(how_over, winner, expected):
+    """Test get_over_tag for draw and unknown outcomes."""
     event = OverEvent(how_over=how_over, who_is_winner=winner)
 
     assert event.get_over_tag() == expected
@@ -52,12 +57,14 @@ def test_get_over_tag_draw_and_unknown(how_over, winner, expected):
     ],
 )
 def test_post_init_validates_winner_configuration(how_over, who_is_winner):
+    """Test that invalid configurations raise AssertionError."""
     with pytest.raises(AssertionError):
         OverEvent(how_over=how_over, who_is_winner=who_is_winner)
 
 
 @pytest.mark.parametrize("player", [Color.WHITE, Color.BLACK])
 def test_is_winner_requires_win(player):
+    """Test that is_winner returns False when the game is a draw."""
     event = OverEvent(how_over=HowOver.DRAW, who_is_winner=Winner.NO_KNOWN_WINNER)
 
     assert event.is_winner(player) is False
@@ -71,6 +78,7 @@ def test_is_winner_requires_win(player):
     ],
 )
 def test_get_over_tag_invalid_configurations(how_over, expected_exception):
+    """Test that get_over_tag raises ValueError for invalid configurations."""
     event = OverEvent(how_over=HowOver.WIN, who_is_winner=Winner.WHITE)
     event.how_over = how_over  # mutate to bypass post-init validation
     event.who_is_winner = Winner.NO_KNOWN_WINNER
@@ -87,12 +95,14 @@ def test_get_over_tag_invalid_configurations(how_over, expected_exception):
     ],
 )
 def test_test_method_for_wins(how_over, who_is_winner):
+    """Test the test method for win outcomes."""
     event = OverEvent(how_over=how_over, who_is_winner=who_is_winner)
 
     event.test()
 
 
 def test_test_method_invalid_draw_configuration():
+    """Test that the test method raises AssertionError for invalid draw configuration."""
     event = OverEvent(how_over=HowOver.DRAW, who_is_winner=Winner.NO_KNOWN_WINNER)
 
     with pytest.raises(AssertionError):
@@ -100,6 +110,7 @@ def test_test_method_invalid_draw_configuration():
 
 
 def test_bool_raises():
+    """Test that __bool__ raises ValueError."""
     event = OverEvent()
 
     with pytest.raises(ValueError):
