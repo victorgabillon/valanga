@@ -125,6 +125,7 @@ class OverEvent:
     termination: Enum | None = None  # Optional termination reason
 
     def __post_init__(self) -> None:
+        """Validate the initial over event state."""
         assert self.how_over in HowOver
         assert self.who_is_winner in Winner
 
@@ -141,10 +142,11 @@ class OverEvent:
         termination: Enum | None,
         who_is_winner: Winner = Winner.NO_KNOWN_WINNER,
     ) -> None:
-        """Sets the `how_over` and `who_is_winner` attributes.
+        """Set the `how_over` and `who_is_winner` attributes.
 
         Args:
             how_over (HowOver): The way the game ended.
+            termination (Enum | None): Optional termination reason.
             who_is_winner (Winner, optional): The winner of the game. Defaults to `Winner.NO_KNOWN_WINNER`.
 
         """
@@ -153,7 +155,7 @@ class OverEvent:
         self.termination = termination
 
     def get_over_tag(self) -> OverTags:
-        """Returns a tag string used in databases.
+        """Return a tag string used in databases.
 
         Returns:
             OverTags: The tag string representing the game outcome.
@@ -179,7 +181,7 @@ class OverEvent:
         return over_tag
 
     def __bool__(self) -> None:
-        """Raises an exception.
+        """Raise an exception.
 
         Raises:
             Exception: Always raises an exception.
@@ -188,7 +190,7 @@ class OverEvent:
         raise ValueError("Nooooooooooo  in over ebvent.py")
 
     def is_over(self) -> bool:
-        """Checks if the game is over.
+        """Check if the game is over.
 
         Returns:
             bool: True if the game is over, False otherwise.
@@ -197,7 +199,7 @@ class OverEvent:
         return self.how_over in {HowOver.WIN, HowOver.DRAW}
 
     def is_win(self) -> bool:
-        """Checks if the game ended with a win.
+        """Check if the game ended with a win.
 
         Returns:
             bool: True if the game ended with a win, False otherwise.
@@ -206,7 +208,7 @@ class OverEvent:
         return self.how_over == HowOver.WIN
 
     def is_draw(self) -> bool:
-        """Checks if the game ended with a draw.
+        """Check if the game ended with a draw.
 
         Returns:
             bool: True if the game ended with a draw, False otherwise.
@@ -215,7 +217,7 @@ class OverEvent:
         return self.how_over == HowOver.DRAW
 
     def is_winner(self, player: Color) -> bool:
-        """Checks if the specified player is the winner.
+        """Check if the specified player is the winner.
 
         Args:
             player (chess.Color): The player to check.
@@ -243,7 +245,7 @@ class OverEvent:
         return is_winner
 
     def print_info(self) -> None:
-        """Prints information about the `OverEvent` object."""
+        """Print information about the `OverEvent` object."""
         print(
             "over_event:",
             "how_over:",
