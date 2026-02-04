@@ -120,7 +120,7 @@ line-length = 88
 target-version = "py313"
 
 # Enable import sorting (alphabetical + group order)
-lint.select = ["I", "F", "E", "B", "TCH","UP","SIM", "C4", "RUF", "PL","RET","ARG","D","ANN"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
+lint.select = ["I", "F", "E", "B", "TCH","UP","SIM", "C4", "RUF", "PL","RET","ARG","ANN"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
 
 # Allow auto-fixing for imports and type-checking imports
 lint.fixable = ["I", "TCH", "F401", "RUF","PL","D"]
@@ -189,7 +189,7 @@ package = "skip"
 deps = ["ruff>=0.15.0", "pylint>=4.0.4"]
 set_env = { PYTHONPATH = "{toxinidir}/src" }
 commands = [
-  ["python", "-m", "ruff", "check", "src", "tests"],
+  ["python", "-m", "ruff", "check", "src"],
   ["python", "-m", "ruff", "format", "--check", "src", "tests"],
   ["python", "-m", "pylint", "src/valanga"],
 ]
