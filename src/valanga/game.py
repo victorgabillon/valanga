@@ -31,19 +31,19 @@ class BranchKeyGeneratorP(Protocol[T_co]):
 
     @property
     def all_generated_keys(self) -> Sequence[T_co] | None:
-        """Returns all generated branch keys if available, otherwise None."""
+        """Return all generated branch keys if available, otherwise None."""
         ...
 
     def __iter__(self) -> Iterator[T_co]:
-        """Returns an iterator over the branch keys."""
+        """Return an iterator over the branch keys."""
         ...
 
     def __next__(self) -> T_co:
-        """Returns the next branch key."""
+        """Return the next branch key."""
         ...
 
     def more_than_one(self) -> bool:
-        """Checks if there is more than one branch available.
+        """Check if there is more than one branch available.
 
         Returns:
             bool: True if there is more than one branch, False otherwise.
@@ -52,11 +52,11 @@ class BranchKeyGeneratorP(Protocol[T_co]):
         ...
 
     def get_all(self) -> Sequence[T_co]:
-        """Returns a list of all branch keys."""
+        """Return a list of all branch keys."""
         ...
 
     def copy_with_reset(self) -> Self:
-        """Creates a copy of the legal move generator with an optional reset of generated moves.
+        """Create a copy of the legal move generator with an optional reset of generated moves.
 
         Returns:
             Self: A new instance of the legal move generator with the specified generated moves.
@@ -70,7 +70,7 @@ class State(Protocol):
 
     @property
     def tag(self) -> StateTag:
-        """Returns the tag of the content.
+        """Return the tag of the content.
 
         Returns:
             StateTag: The tag of the content.
@@ -80,7 +80,7 @@ class State(Protocol):
 
     @property
     def branch_keys(self) -> BranchKeyGeneratorP[BranchKey]:
-        """Returns the branch keys associated with the content.
+        """Return the branch keys associated with the content.
 
         Returns:
             BranchKeyGeneratorP: The branch keys associated with the content.
@@ -89,7 +89,7 @@ class State(Protocol):
         ...
 
     def branch_name_from_key(self, key: BranchKey) -> str:
-        """Returns the branch name corresponding to the given branch key.
+        """Return the branch name corresponding to the given branch key.
 
         Args:
             key (BranchKey): The branch key.
@@ -101,7 +101,7 @@ class State(Protocol):
         ...
 
     def branch_key_from_name(self, name: str) -> BranchKey:
-        """Returns the branch key corresponding to the given branch name.
+        """Return the branch key corresponding to the given branch name.
 
         Args:
             name (str): The branch name.
@@ -113,7 +113,7 @@ class State(Protocol):
         ...
 
     def is_game_over(self) -> bool:
-        """Checks if the game represented by the content is over.
+        """Check if the game represented by the content is over.
 
         Returns:
             bool: True if the game is over, False otherwise.
@@ -135,7 +135,7 @@ class State(Protocol):
         ...
 
     def step(self, branch_key: BranchKey) -> StateModifications | None:
-        """Advances the state by applying the action corresponding to the given branch key.
+        """Advance the state by applying the action corresponding to the given branch key.
 
         Args:
             branch_key (BranchKey): The branch key representing the action to be applied.
@@ -147,7 +147,7 @@ class State(Protocol):
         ...
 
     def pprint(self) -> str:
-        """Returns a pretty-printed string representation of the content.
+        """Return a pretty-printed string representation of the content.
 
         Returns:
             str: A pretty-printed string representation of the content.
@@ -193,7 +193,7 @@ class HasTurn(Protocol):
 
     @property
     def turn(self) -> Color:
-        """Returns the tag of the content.
+        """Return the tag of the content.
 
         Returns:
             ContentTag: The tag of the content.

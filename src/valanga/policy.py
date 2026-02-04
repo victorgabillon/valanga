@@ -44,6 +44,7 @@ class BranchSelector(Protocol[StateT_contra]):
         Args:
             state (State): The current state of the game.
             seed (Seed): A seed for any randomness involved in the selection.
+            notify_progress (NotifyProgressCallable | None): Optional callback for progress updates.
 
         Returns:
             Recommendation: The recommended branch to take.

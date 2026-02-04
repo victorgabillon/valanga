@@ -11,7 +11,9 @@ from .game import State
 class CreateFromState[StateT: State, EvalIn](Protocol):
     """Protocol for creating a state representation from a state."""
 
-    def __call__(self, state: StateT) -> ContentRepresentation[StateT, EvalIn]: ...
+    def __call__(self, state: StateT) -> ContentRepresentation[StateT, EvalIn]:
+        """Create a content representation from a state."""
+        ...
 
 
 class CreateFromStateAndModifications[StateT: State, EvalIn, StateModT](Protocol):
@@ -22,7 +24,9 @@ class CreateFromStateAndModifications[StateT: State, EvalIn, StateModT](Protocol
         state: StateT,
         state_modifications: StateModT,
         previous_state_representation: ContentRepresentation[StateT, EvalIn],
-    ) -> ContentRepresentation[StateT, EvalIn]: ...
+    ) -> ContentRepresentation[StateT, EvalIn]:
+        """Create a content representation from state modifications."""
+        ...
 
 
 @dataclass
@@ -46,7 +50,7 @@ class RepresentationFactory[StateT: State, EvalIn, StateModT]:
         previous_state_representation: ContentRepresentation[StateT, EvalIn] | None,
         modifications: StateModT | None,
     ) -> ContentRepresentation[StateT, EvalIn]:
-        """Creates a content representation from a state transition.
+        """Create a content representation from a state transition.
 
         Args:
             state: The current state of the game.

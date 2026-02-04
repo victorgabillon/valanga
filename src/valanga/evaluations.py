@@ -11,7 +11,8 @@ from .represention_for_evaluation import ContentRepresentation
 
 
 class EvalItem[StateT: State](Protocol):
-    """The protocol for an evaluation item.
+    """Define the protocol for an evaluation item.
+
     An evaluation item is something that has a state and optionally a representation of that state.
     """
 
@@ -41,7 +42,8 @@ class ForcedOutcome:
 
 @dataclass
 class FloatyStateEvaluation:
-    """The class to defines what is an evaluation of a board.
+    """Define what is an evaluation of a board.
+
     By convention is it always evaluated from the view point of the white side.
     """
 
