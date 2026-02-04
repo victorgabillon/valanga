@@ -48,7 +48,7 @@ class FloatyStateEvaluation:
     """
 
     # The evaluation value for the white side when the outcome is not certain. Typically, a float.
-    # todo can we remove the None option?
+    # TODO(victor): can we remove the None option? see issue #642
     value_white: float | None
 
 

@@ -120,13 +120,18 @@ line-length = 88
 target-version = "py313"
 
 # Enable import sorting (alphabetical + group order)
-lint.select = ["I", "F", "E", "B", "TCH","UP","SIM", "C4", "RUF", "PL","RET","ARG","ANN"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
+lint.select = ["I", "F", "E", "B", "TCH","UP","SIM",
+ "C4", "RUF", "PL","RET","ARG","ANN", "PERF", "TRY","LOG","RSE",
+ "D","ISC","PIE","ERA","TD"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
 
 # Allow auto-fixing for imports and type-checking imports
 lint.fixable = ["I", "TCH", "F401", "RUF","PL","D"]
 
 # Ignore rules you don't care about
-lint.ignore = [ "E501"]
+lint.ignore = [ "E501",
+    "D203",  # incompatible with D211
+    "D213",  # incompatible with D212
+]
 
 # Optional: add your first-party package to extend the known group
 [tool.ruff.lint.per-file-ignores]

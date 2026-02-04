@@ -6,6 +6,18 @@ from enum import Enum, StrEnum
 from .game import Color
 
 
+class WinnerNotProperlyDefinedError(ValueError):
+    """Winner is not properly defined."""
+
+
+class OverNotProperlyDefinedError(ValueError):
+    """Over is not properly defined."""
+
+
+class OverEventInvariantError(ValueError):
+    """OverEvent reached an invalid state."""
+
+
 class HowOver(Enum):
     """Represents the possible outcomes of a game.
 
@@ -171,13 +183,13 @@ class OverEvent:
             elif self.who_is_winner.is_black():
                 over_tag = OverTags.TAG_WIN_BLACK
             else:
-                raise ValueError("error: winner is not properly defined.")
+                raise WinnerNotProperlyDefinedError
         elif self.how_over == HowOver.DRAW:
             over_tag = OverTags.TAG_DRAW
         elif self.how_over == HowOver.DO_NOT_KNOW_OVER:
             over_tag = OverTags.TAG_DO_NOT_KNOW
         else:
-            raise ValueError("error: over is not properly defined.")
+            raise OverNotProperlyDefinedError
         return over_tag
 
     def __bool__(self) -> None:
@@ -187,7 +199,7 @@ class OverEvent:
             Exception: Always raises an exception.
 
         """
-        raise ValueError("Nooooooooooo  in over ebvent.py")
+        raise OverEventInvariantError
 
     def is_over(self) -> bool:
         """Check if the game is over.
