@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=80.9.0", "wheel"]
+requires = ["setuptools>=80.10.2", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "valanga"
-version = "0.1.13"
+version = "0.1.14"
 description = "Shared types and utilities for evaluation"
 requires-python = ">=3.13"
 dependencies = []
@@ -20,7 +20,7 @@ classifiers = [
 [project.optional-dependencies]
 test = [
     # Testing dependencies
-    "pytest>=8.4.1",
+    "pytest>=9.0.2",
     "coverage",
     "pytest-cov>=6.0.0"
 ]
