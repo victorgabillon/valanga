@@ -2,7 +2,8 @@
 
 from typing import Protocol, TypeVar
 
-from .game import BranchKey, BranchKeyGeneratorP, State as StateP
+from .game import BranchKey, BranchKeyGeneratorP
+from .game import State as StateP
 
 StateT = TypeVar("StateT", bound=StateP)
 UndoT = TypeVar("UndoT")

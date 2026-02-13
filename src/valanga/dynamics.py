@@ -4,10 +4,16 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Protocol, TypeVar
 
-from .game import BranchKey, BranchKeyGeneratorP, State as StateP, StateModifications
+from .game import BranchKey, BranchKeyGeneratorP, StateModifications
+from .game import State as StateP
 from .over_event import OverEvent
 
 StateT = TypeVar("StateT", bound=StateP)
+
+
+def _make_info() -> Mapping[str, Any]:
+    """Default factory for ``Transition.info``."""
+    return {}
 
 
 @dataclass(frozen=True)
@@ -18,13 +24,14 @@ class Transition[StateT]:
         ``modifications`` is an optional compatibility field for diff-based engines.
         Reversible engines may instead use their own ``UndoT`` token via
         ``ReversibleDynamics``.
+
     """
 
     next_state: StateT
     modifications: StateModifications | None = None
     is_over: bool = False
     over_event: OverEvent | None = None
-    info: Mapping[str, Any] = field(default_factory=dict)
+    info: Mapping[str, Any] = field(default_factory=_make_info)
 
 
 class Dynamics[StateT](Protocol):
