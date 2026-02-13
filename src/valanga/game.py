@@ -78,70 +78,11 @@ class State(Protocol):
         """
         ...
 
-    @property
-    def branch_keys(self) -> BranchKeyGeneratorP[BranchKey]:
-        """Return the branch keys associated with the content.
-
-        Returns:
-            BranchKeyGeneratorP: The branch keys associated with the content.
-
-        """
-        ...
-
-    def branch_name_from_key(self, key: BranchKey) -> str:
-        """Return the branch name corresponding to the given branch key.
-
-        Args:
-            key (BranchKey): The branch key.
-
-        Returns:
-            str: The branch name corresponding to the given branch key.
-
-        """
-        ...
-
-    def branch_key_from_name(self, name: str) -> BranchKey:
-        """Return the branch key corresponding to the given branch name.
-
-        Args:
-            name (str): The branch name.
-
-        Returns:
-            BranchKey: The branch key corresponding to the given branch name.
-
-        """
-        ...
-
     def is_game_over(self) -> bool:
         """Check if the game represented by the content is over.
 
         Returns:
             bool: True if the game is over, False otherwise.
-
-        """
-        ...
-
-    def copy(self, stack: bool, deep_copy_legal_moves: bool = True) -> Self:
-        """Create a copy of the current board.
-
-        Args:
-            stack (bool): Whether to copy the previous action stack as well. Important in some games.
-            deep_copy_legal_moves (bool): Whether to deep copy the legal moves generator.
-
-        Returns:
-            BoardChi: A new instance of the BoardChi class with the copied board.
-
-        """
-        ...
-
-    def step(self, branch_key: BranchKey) -> StateModifications | None:
-        """Advance the state by applying the action corresponding to the given branch key.
-
-        Args:
-            branch_key (BranchKey): The branch key representing the action to be applied.
-
-        Returns:
-            StateModifications | None: The modifications to the state after applying the action, or None if the action is invalid.
 
         """
         ...
