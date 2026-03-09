@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=80.10.2", "wheel"]
+requires = ["setuptools>=82.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "valanga"
-version = "0.2.0"
+version = "0.2.1"
 description = "Shared types and utilities for evaluation"
 requires-python = ">=3.13"
 dependencies = []
@@ -26,8 +26,8 @@ test = [
 ]
 
 lint = [
-  "ruff>=0.15.0",
-  "pylint>=4.0.4",
+  "ruff>=0.15.5",
+  "pylint>=4.0.5",
 ]
 
 typecheck = [
@@ -42,8 +42,8 @@ dev = [
     "types-PyYAML>=6.0.12.12",
 
     # Linting & formatting
-    "ruff>=0.15.0",
-    "pylint>=4.0.4",
+    "ruff>=0.15.5",
+    "pylint>=4.0.5",
     "black>=25.12.0",
 
     # Type checking
@@ -191,7 +191,7 @@ commands = [["pytest", "{posargs}"]]
 [tool.tox.env.lint]
 description = "ruff + pylint (fast, no package install)"
 package = "skip"
-deps = ["ruff>=0.15.0", "pylint>=4.0.4"]
+deps = ["ruff>=0.15.5", "pylint>=4.0.5"]
 set_env = { PYTHONPATH = "{toxinidir}/src" }
 commands = [
   ["python", "-m", "ruff", "check", "src"],
