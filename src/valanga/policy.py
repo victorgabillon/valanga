@@ -4,7 +4,7 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Protocol, TypeVar
 
-from valanga.evaluations import StateEvaluation
+from valanga.evaluations import Value
 from valanga.game import BranchKey, BranchName, Seed, State
 
 NotifyProgressCallable = Callable[[int], None] | None
@@ -22,9 +22,9 @@ class Recommendation:
     """A recommendation for a specific branch in a tree node."""
 
     recommended_name: BranchName
-    evaluation: StateEvaluation | None = None
+    evaluation: Value | None = None
     policy: BranchPolicy | None = None
-    branch_evals: Mapping[BranchName, StateEvaluation] | None = None
+    branch_evals: Mapping[BranchName, Value] | None = None
 
 
 StateT_contra = TypeVar("StateT_contra", bound=State, contravariant=True)

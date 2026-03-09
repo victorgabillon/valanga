@@ -1,7 +1,7 @@
 """Common types and utilities shared by multiple libraries."""
 
 from .dynamics import Dynamics, Transition
-from .evaluations import EvalItem, FloatyStateEvaluation, ForcedOutcome, StateEvaluation
+from .evaluations import EvalItem
 from .game import (
     BLACK,
     WHITE,
@@ -31,15 +31,12 @@ __all__ = [
     "ContentRepresentation",
     "Dynamics",
     "EvalItem",
-    "FloatyStateEvaluation",
-    "ForcedOutcome",
     "HasTurn",
     "OverEvent",
     "PlayerProgressMessage",
     "RepresentationFactory",
     "ReversibleDynamics",
     "State",
-    "StateEvaluation",
     "StateModifications",
     "StateTag",
     "Transition",

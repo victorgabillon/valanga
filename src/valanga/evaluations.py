@@ -1,6 +1,7 @@
 """Evaluation-related classes and types."""
 
 from dataclasses import dataclass
+from enum import Enum, auto
 from typing import Protocol
 
 from valanga.evaluator_types import EvaluatorInput
@@ -29,27 +30,19 @@ class EvalItem[StateT: State](Protocol):
         ...
 
 
-@dataclass
-class ForcedOutcome:
-    """The class."""
+class Certainty(Enum):
+    """Certainty levels associated with an evaluation score."""
 
-    # The forced outcome with optimal play by both sides.
-    outcome: OverEvent
-
-    # the line
-    line: list[BranchKey]
+    ESTIMATE = auto()
+    TERMINAL = auto()
+    FORCED = auto()
 
 
-@dataclass
-class FloatyStateEvaluation:
-    """Define what is an evaluation of a board.
+@dataclass(frozen=True, slots=True)
+class Value:
+    """Score plus certainty and optional terminal over-event metadata."""
 
-    By convention is it always evaluated from the view point of the white side.
-    """
-
-    # The evaluation value for the white side when the outcome is not certain. Typically, a float.
-    # TODO(victor): can we remove the None option? see issue #642
-    value_white: float | None
-
-
-StateEvaluation = FloatyStateEvaluation | ForcedOutcome
+    score: float
+    certainty: Certainty
+    over_event: OverEvent | None = None
+    line: list[BranchKey] | None = None
