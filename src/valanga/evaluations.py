@@ -1,13 +1,12 @@
 """Evaluation-related classes and types."""
 
-from collections.abc import Hashable
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Protocol
 
 from valanga.evaluator_types import EvaluatorInput
 
-from .game import BranchKey, State
+from .game import BranchKey, Role, State
 from .over_event import OverEvent
 from .represention_for_evaluation import ContentRepresentation
 
@@ -49,5 +48,5 @@ class Value:
 
     score: float
     certainty: Certainty
-    over_event: OverEvent[Hashable] | None = None
+    over_event: OverEvent[Role] | None = None
     line: list[BranchKey] | None = None
