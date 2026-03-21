@@ -4,12 +4,14 @@ from .dynamics import Dynamics, Transition
 from .evaluations import EvalItem
 from .game import (
     BLACK,
+    SOLO,
     WHITE,
     BranchKey,
     BranchKeyGeneratorP,
     Color,
     ColorIndex,
     HasTurn,
+    SoloRole,
     State,
     StateModifications,
     StateTag,
@@ -42,6 +44,8 @@ __all__ = [
     "State",
     "StateModifications",
     "StateTag",
+    "SOLO",
+    "SoloRole",
     "Transition",
     "TurnState",
     "Winner",

@@ -1,4 +1,9 @@
-"""Common types and utilities representing game objects shared by multiple libraries."""
+"""Common game primitives shared by multiple libraries.
+
+This module keeps `Color` for current black/white games while generalizing
+turn-carrying protocols so `turn` means the current acting role, not
+specifically white or black.
+"""
 
 from collections.abc import Hashable, Iterator, Sequence
 from dataclasses import dataclass, field
@@ -21,6 +26,7 @@ type ActionName = Annotated[str, "A human-readable name for an action of a state
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
 T_co = TypeVar("T_co", bound=Hashable, covariant=True)
+RoleT_co = TypeVar("RoleT_co", bound=Hashable, covariant=True)
 
 
 class BranchKeyGeneratorP(Protocol[T_co]):
@@ -104,10 +110,19 @@ BLACK: ColorIndex = 0
 
 
 class Color(int, Enum):
-    """Represents the color of a player in a game."""
+    """Represents the acting role for a two-player black/white game."""
 
     WHITE = WHITE
     BLACK = BLACK
+
+
+class SoloRole(Enum):
+    """Represents the sole acting role in a single-player sequential game."""
+
+    SOLO = "solo"
+
+
+SOLO: SoloRole = SoloRole.SOLO
 
 
 def _actions_history_factory() -> list[ActionKey]:
@@ -129,36 +144,45 @@ class StatePlusHistory[StateT]:
     historical_states: list[StateT] = field(default_factory=_states_factory)
 
 
-class HasTurn(Protocol):
-    """Protocol for a content object that has a tag."""
+class HasTurn(Protocol[RoleT_co]):
+    """Protocol for a state-like object with a current acting role.
+
+    The `turn` attribute is intentionally role-generic. `Color` remains a valid
+    role for adversarial games, while single-player states can use
+    :class:`SoloRole` and future multiplayer states can use other hashable role
+    identifiers.
+    """
 
     @property
-    def turn(self) -> Color:
-        """Return the tag of the content.
+    def turn(self) -> RoleT_co:
+        """Return the current acting role.
 
         Returns:
-            ContentTag: The tag of the content.
+            RoleT_co: The role whose turn it is to act.
 
         """
         ...
 
 
-class TurnState(State, HasTurn, Protocol):
-    """A State that also supports turn()."""
+class TurnState(State, HasTurn[RoleT_co], Protocol[RoleT_co]):
+    """A State that also exposes the current acting role."""
 
     ...
 
 
 @dataclass
-class TurnStatePlusHistory[StateT = Any]:
-    """A TurnState with historical actions and states."""
+class TurnStatePlusHistory[StateT = Any, RoleT: Hashable = Color]:
+    """A turn-carrying state snapshot with historical actions and states.
+
+    The role type defaults to :class:`Color` for backward compatibility.
+    """
 
     @staticmethod
     def _states_factory() -> list[StateT]:
         return []
 
     current_state_tag: StateTag
-    turn: Color
+    turn: RoleT
     historical_actions: list[ActionKey] = field(
         default_factory=_actions_history_factory
     )
