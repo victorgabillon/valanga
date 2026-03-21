@@ -23,7 +23,7 @@ class Outcome(Enum):
     """Result semantics for a terminal event.
 
     `Outcome` answers what the result is, independently from why the game or
-    episode stopped.
+    episode stopped. It is the preferred result model for Valanga.
     """
 
     WIN = auto()
@@ -140,6 +140,15 @@ def _legacy_how_over_from_outcome(outcome: Outcome) -> HowOver:
     raise OverNotProperlyDefinedError
 
 
+def _legacy_over_tag_from_winner_identity(winner: Hashable | None) -> OverTags | None:
+    """Project a canonical winner identity into the legacy color tag space."""
+    if winner is Color.WHITE:
+        return OverTags.TAG_WIN_WHITE
+    if winner is Color.BLACK:
+        return OverTags.TAG_WIN_BLACK
+    return None
+
+
 @dataclass(slots=True, init=False)
 class OverEvent:
     """Describe a terminal result in a role-aware but winner-optional way.
@@ -155,8 +164,9 @@ class OverEvent:
         `winner` is optional metadata and is only meaningful when a role-based
         winner exists.
 
-        The legacy `how_over` and `who_is_winner` views are preserved for
-        compatibility with existing color-based callers.
+        `outcome`, `termination`, and `winner` are the canonical model.
+        The legacy `how_over` and `who_is_winner` views are preserved as
+        compatibility projections for existing color-based callers.
     """
 
     outcome: Outcome
@@ -172,7 +182,12 @@ class OverEvent:
         outcome: Outcome | None = None,
         winner: Hashable | Winner | None = None,
     ) -> None:
-        """Create an over event from the new or legacy API."""
+        """Create an over event from the new or legacy API.
+
+        Prefer the canonical keyword arguments `outcome`, `termination`, and
+        `winner`. The legacy `how_over` and `who_is_winner` inputs remain for
+        compatibility during the migration.
+        """
         resolved_outcome = outcome
         if resolved_outcome is None:
             resolved_outcome = _outcome_from_legacy(how_over)
@@ -189,6 +204,18 @@ class OverEvent:
         self.outcome = resolved_outcome
         self.termination = termination
         self.winner = resolved_winner
+        self._validate()
+
+    def becomes_terminal(
+        self,
+        outcome: Outcome,
+        termination: Enum | None = None,
+        winner: Hashable | Winner | None = None,
+    ) -> None:
+        """Preferred mutating API using canonical outcome semantics."""
+        self.outcome = outcome
+        self.termination = termination
+        self.winner = _normalize_winner_identity(winner)
         self._validate()
 
     @property
@@ -238,7 +265,11 @@ class OverEvent:
         outcome: Outcome | None = None,
         winner: Hashable | Winner | None = None,
     ) -> None:
-        """Update the event using either the new or legacy API."""
+        """Compatibility mutator for legacy and transitional callers.
+
+        New code should prefer :meth:`becomes_terminal`, which works directly
+        with the canonical `outcome`, `termination`, and `winner` model.
+        """
         updated = type(self)(
             how_over=how_over,
             who_is_winner=who_is_winner,
@@ -246,9 +277,11 @@ class OverEvent:
             outcome=outcome,
             winner=winner,
         )
-        self.outcome = updated.outcome
-        self.termination = updated.termination
-        self.winner = updated.winner
+        self.becomes_terminal(
+            outcome=updated.outcome,
+            termination=updated.termination,
+            winner=updated.winner,
+        )
 
     def get_over_tag(self) -> OverTags:
         """Return the legacy storage tag for the current outcome.
@@ -263,12 +296,10 @@ class OverEvent:
         if not isinstance(self.outcome, Outcome):
             raise OverNotProperlyDefinedError
 
-        legacy_winner = self.who_is_winner
         if self.outcome is Outcome.WIN:
-            if legacy_winner.is_white():
-                return OverTags.TAG_WIN_WHITE
-            if legacy_winner.is_black():
-                return OverTags.TAG_WIN_BLACK
+            legacy_tag = _legacy_over_tag_from_winner_identity(self.winner)
+            if legacy_tag is not None:
+                return legacy_tag
             return OverTags.TAG_DO_NOT_KNOW
         if self.outcome is Outcome.DRAW:
             return OverTags.TAG_DRAW
@@ -333,9 +364,9 @@ class OverEvent:
             self.termination,
             "winner:",
             self.winner,
-            "how_over:",
+            "legacy_how_over:",
             self.how_over,
-            "who_is_winner:",
+            "legacy_who_is_winner:",
             self.who_is_winner,
         )
 

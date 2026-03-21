@@ -110,14 +110,17 @@ BLACK: ColorIndex = 0
 
 
 class Color(int, Enum):
-    """Represents the acting role for a two-player black/white game."""
+    """Represents the acting role for a two-player black/white game.
+
+    `Color` is one concrete role type, not the universal turn model.
+    """
 
     WHITE = WHITE
     BLACK = BLACK
 
 
 class SoloRole(Enum):
-    """Represents the sole acting role in a single-player sequential game."""
+    """Represents the preferred acting role type for single-player games."""
 
     SOLO = "solo"
 
@@ -174,7 +177,8 @@ class TurnState(State, HasTurn[RoleT_co], Protocol[RoleT_co]):
 class TurnStatePlusHistory[StateT = Any, RoleT: Hashable = Color]:
     """A turn-carrying state snapshot with historical actions and states.
 
-    The role type defaults to :class:`Color` for backward compatibility.
+    The role type defaults to :class:`Color` for backward compatibility, but
+    the preferred model is role-generic.
     """
 
     @staticmethod

@@ -7,11 +7,11 @@
 Shared Python types and lightweight utilities for describing turn-based games and their evaluations. The package exposes protocols for representing states, outcomes, and state representations that other libraries can build on.
 
 ## Key concepts
-- **Game primitives**: `Color`, `BranchKey`, `State`, and related protocols describe whose turn it is, how to enumerate legal branches, and how to copy or advance a state. 【F:src/valanga/game.py†L14-L95】
-- **Evaluations**: `FloatyStateEvaluation` captures heuristic scores while `ForcedOutcome` records a definitive result plus the line of play that forces it. Both are grouped under `BoardEvaluation`. 【F:src/valanga/evaluations.py†L13-L43】
-- **Game termination**: `OverEvent` combines how a game ended with who won, backed by `HowOver` and `Winner` enums. Utility helpers like `is_over()` and `get_over_tag()` simplify downstream checks. 【F:src/valanga/over_event.py†L8-L115】
+- **Game primitives**: `State`, `HasTurn[RoleT]`, and `TurnState[RoleT]` model states and acting roles. `Color` remains the natural role type for black/white games, while `SoloRole` supports single-player sequential games without fake color semantics. 【F:src/valanga/game.py†L1-L189】
+- **Evaluations**: `Value` carries a score, certainty level, and optional terminal `OverEvent` metadata. 【F:src/valanga/evaluations.py†L31-L47】
+- **Game termination**: `OverEvent` is outcome-centered. Its canonical fields are `outcome`, `termination`, and optional `winner`; legacy `HowOver`, `Winner`, and `OverTags` remain available as compatibility helpers. 【F:src/valanga/over_event.py†L22-L347】
 - **State representations**: `ContentRepresentation` defines how to turn a `State` into evaluator input, and `RepresentationFactory` builds or updates those representations from states and modifications. 【F:src/valanga/represention_for_evaluation.py†L9-L22】【F:src/valanga/representation_factory.py†L7-L55】
-- **Progress reporting**: `PlayerProgressMessage` communicates per-player progress percentages during long-running work. 【F:src/valanga/progress_messsage.py†L9-L18】
+- **Progress reporting**: `PlayerProgressMessage` remains a Color-based compatibility helper for per-player progress reporting. 【F:src/valanga/progress_messsage.py†L1-L13】
 
 ## Installation
 ```bash
@@ -20,17 +20,36 @@ pip install .
 The project targets Python 3.13 and has no required runtime dependencies.
 
 ## Quick start
-Below is a minimal example that marks a finished game and obtains an evaluation structure:
+Below is a minimal example that records both a two-player terminal result and a single-player terminal result using the preferred API:
 ```python
-from valanga import ForcedOutcome, OverEvent
-from valanga.over_event import HowOver, Winner
+from enum import Enum, auto
 
-# A checkmate where white wins.
-over_event = OverEvent(how_over=HowOver.WIN, who_is_winner=Winner.WHITE)
+from valanga import Color, Outcome, OverEvent
 
-# Record the forced outcome and the line of optimal moves that lead to it.
-forced = ForcedOutcome(outcome=over_event, line=["e2e4", "e7e5"])
-print(forced.outcome.get_over_tag())  # -> OverTags.TAG_WIN_WHITE
+
+class ChessTermination(Enum):
+    CHECKMATE = auto()
+
+
+class PuzzleTermination(Enum):
+    GOAL_REACHED = auto()
+
+
+# Two-player result: white wins by checkmate.
+checkmate = OverEvent(
+    outcome=Outcome.WIN,
+    termination=ChessTermination.CHECKMATE,
+    winner=Color.WHITE,
+)
+
+# Single-player result: the puzzle objective was reached.
+puzzle_clear = OverEvent(
+    outcome=Outcome.WIN,
+    termination=PuzzleTermination.GOAL_REACHED,
+)
+
+print(checkmate.is_win_for(Color.WHITE))  # -> True
+print(puzzle_clear.is_success())  # -> True
 ```
 
 To wire in a custom state representation, supply callables to `RepresentationFactory` that know how to build representations from a `State` and its modifications.

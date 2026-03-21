@@ -104,6 +104,22 @@ def test_single_player_win_supports_outcome_without_fake_winner():
     assert event.get_over_tag() is OverTags.TAG_DO_NOT_KNOW
 
 
+def test_outcome_centered_color_win_projects_to_legacy_views():
+    """Canonical outcome/winner inputs should drive the legacy compatibility view."""
+    event = OverEvent(
+        outcome=Outcome.WIN,
+        termination=DummyTermination.CHECKMATE,
+        winner=Color.BLACK,
+    )
+
+    assert event.is_win() is True
+    assert event.is_win_for(Color.BLACK) is True
+    assert event.winner is Color.BLACK
+    assert event.how_over is HowOver.WIN
+    assert event.who_is_winner is Winner.BLACK
+    assert event.get_over_tag() is OverTags.TAG_WIN_BLACK
+
+
 def test_single_player_loss_is_terminal_and_outcome_centered():
     """A single-player failure should be representable without a winner."""
     event = OverEvent(
@@ -163,6 +179,21 @@ def test_becomes_over_supports_new_api():
     assert event.outcome is Outcome.WIN
     assert event.termination is DummyTermination.GOAL_REACHED
     assert event.winner is None
+
+
+def test_becomes_terminal_is_the_canonical_mutating_api():
+    """The preferred mutator should work directly with outcome semantics."""
+    event = OverEvent()
+
+    event.becomes_terminal(
+        outcome=Outcome.LOSS,
+        termination=DummyTermination.DEAD_END,
+    )
+
+    assert event.outcome is Outcome.LOSS
+    assert event.termination is DummyTermination.DEAD_END
+    assert event.winner is None
+    assert event.how_over is HowOver.DO_NOT_KNOW_OVER
 
 
 def test_get_over_tag_raises_for_invalid_outcome_type():

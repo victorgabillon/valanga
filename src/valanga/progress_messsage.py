@@ -1,4 +1,9 @@
-"""Module for the ProgressMessage class."""
+"""Progress-message helpers.
+
+`PlayerProgressMessage` remains a Color-oriented helper for existing
+two-player integrations. The preferred generalized acting-role model now lives
+in :mod:`valanga.game`.
+"""
 
 from dataclasses import dataclass
 
@@ -7,12 +12,7 @@ from .game import Color
 
 @dataclass
 class PlayerProgressMessage:
-    """Represents a message containing evaluation information.
-
-    Attributes:
-        evaluation_stock (Any): The evaluation for the stock.
-
-    """
+    """Represents per-player progress information for Color-based callers."""
 
     progress_percent: int | None
     player_color: Color
