@@ -1,5 +1,6 @@
 """Evaluation-related classes and types."""
 
+from collections.abc import Hashable
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Protocol
@@ -48,5 +49,5 @@ class Value:
 
     score: float
     certainty: Certainty
-    over_event: OverEvent | None = None
+    over_event: OverEvent[Hashable] | None = None
     line: list[BranchKey] | None = None

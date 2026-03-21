@@ -8,14 +8,12 @@ from valanga.representation_factory import RepresentationFactory
 class DummyRepresentation:
     """A dummy representation class for testing purposes."""
 
-    pass
 
-
-def test_create_from_transition_root_uses_full_creator():
+def test_create_from_transition_root_uses_full_creator() -> None:
     """At the root, create_from_state should be used even if modifications are None."""
     calls = Counter()
 
-    def create_from_state(state):
+    def create_from_state(state: str) -> tuple[str, str]:
         """Mock create_from_state function."""
         calls["create_from_state"] += 1
         return ("state", state)
@@ -32,11 +30,11 @@ def test_create_from_transition_root_uses_full_creator():
     assert calls["create_from_state"] == 1
 
 
-def test_create_from_transition_no_modifications_falls_back_to_state():
+def test_create_from_transition_no_modifications_falls_back_to_state() -> None:
     """If no modifications are provided, create_from_state should be used."""
     calls = Counter()
 
-    def create_from_state(state):
+    def create_from_state(state: str) -> tuple[str, str]:
         calls["create_from_state"] += 1
         return ("state", state)
 
@@ -54,13 +52,15 @@ def test_create_from_transition_no_modifications_falls_back_to_state():
     assert calls["create_from_state"] == 1
 
 
-def test_create_from_transition_with_modifications():
+def test_create_from_transition_with_modifications() -> None:
     """If modifications are provided, create_from_state_and_modifications should be used."""
     calls = Counter()
 
     def create_from_state_and_modifications(
-        state, state_modifications, previous_state_representation
-    ):
+        state: str,
+        state_modifications: str,
+        previous_state_representation: DummyRepresentation,
+    ) -> tuple[str, str, DummyRepresentation]:
         """Mock create_from_state_and_modifications function."""
         calls["create_from_state_and_modifications"] += 1
         return (state, state_modifications, previous_state_representation)

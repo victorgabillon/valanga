@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 
 import valanga
-from valanga import Color, HasTurn, SOLO, SoloRole, TurnState
+from valanga import SOLO, Color, HasTurn, SoloRole, TurnState
 from valanga.game import TurnStatePlusHistory
 
 
@@ -59,7 +59,7 @@ def tagged_solo_state(state: TurnState[SoloRole]) -> tuple[str, SoloRole]:
     return state.tag, state.turn
 
 
-def test_color_turn_state_is_natural():
+def test_color_turn_state_is_natural() -> None:
     """Color should remain a natural concrete role type."""
     state = ChessLikeState(tag="midgame", turn=Color.BLACK)
 
@@ -70,7 +70,7 @@ def test_color_turn_state_is_natural():
     assert history.turn is Color.WHITE
 
 
-def test_solo_role_turn_state_works_without_fake_color():
+def test_solo_role_turn_state_works_without_fake_color() -> None:
     """Single-player turn states should use SoloRole rather than fake Color."""
     state = SoloPuzzleState(tag="puzzle", turn=SoloRole.SOLO)
 
@@ -81,7 +81,7 @@ def test_solo_role_turn_state_works_without_fake_color():
     assert history.turn is SoloRole.SOLO
 
 
-def test_package_exports_include_new_role_symbols():
+def test_package_exports_include_new_role_symbols() -> None:
     """Top-level exports should include the final role-model surface."""
     assert valanga.Color is Color
     assert valanga.SoloRole is SoloRole

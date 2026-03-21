@@ -1,6 +1,6 @@
 """Protocols and data structures for game dynamics."""
 
-from collections.abc import Mapping
+from collections.abc import Hashable, Mapping
 from dataclasses import dataclass, field
 from typing import Any, Protocol, TypeVar
 
@@ -31,7 +31,7 @@ class Transition[StateT]:
     next_state: StateT
     modifications: StateModifications | None = None
     is_over: bool = False
-    over_event: OverEvent | None = None
+    over_event: OverEvent[Hashable] | None = None
     info: Mapping[str, Any] = field(default_factory=_make_info)
 
 

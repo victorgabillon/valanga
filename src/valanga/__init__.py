@@ -11,6 +11,7 @@ from .game import (
     Color,
     ColorIndex,
     HasTurn,
+    Role,
     SoloRole,
     State,
     StateModifications,
@@ -25,6 +26,7 @@ from .reversible_dynamics import ReversibleDynamics
 
 __all__ = [
     "BLACK",
+    "SOLO",
     "WHITE",
     "BranchKey",
     "BranchKeyGeneratorP",
@@ -39,11 +41,11 @@ __all__ = [
     "PlayerProgressMessage",
     "RepresentationFactory",
     "ReversibleDynamics",
+    "Role",
+    "SoloRole",
     "State",
     "StateModifications",
     "StateTag",
-    "SOLO",
-    "SoloRole",
     "Transition",
     "TurnState",
 ]

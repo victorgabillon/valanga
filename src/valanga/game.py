@@ -11,6 +11,7 @@ from enum import Enum
 from typing import Annotated, Any, Protocol, Self, TypeVar
 
 type Seed = Annotated[int, "seed"]
+type Role = Hashable
 
 type StateTag = Annotated[Hashable, "A label or identifier for a state in a game"]
 
@@ -26,6 +27,7 @@ type ActionName = Annotated[str, "A human-readable name for an action of a state
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
 T_co = TypeVar("T_co", bound=Hashable, covariant=True)
+RoleT = TypeVar("RoleT", bound=Hashable)
 RoleT_co = TypeVar("RoleT_co", bound=Hashable, covariant=True)
 
 
@@ -171,7 +173,7 @@ class TurnState(State, HasTurn[RoleT_co], Protocol[RoleT_co]):
 
 
 @dataclass
-class TurnStatePlusHistory[StateT = Any, RoleT: Hashable = Color]:
+class TurnStatePlusHistory[StateT = Any, TurnRoleT: Role = Color]:
     """A turn-carrying state snapshot with historical actions and states.
 
     The role type defaults to :class:`Color` for convenience in two-player
@@ -183,7 +185,7 @@ class TurnStatePlusHistory[StateT = Any, RoleT: Hashable = Color]:
         return []
 
     current_state_tag: StateTag
-    turn: RoleT
+    turn: TurnRoleT
     historical_actions: list[ActionKey] = field(
         default_factory=_actions_history_factory
     )

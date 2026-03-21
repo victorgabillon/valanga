@@ -25,7 +25,7 @@ class TeamRole(Enum):
     DEFENDER = "defender"
 
 
-def test_role_based_win_uses_outcome_termination_and_winner():
+def test_role_based_win_uses_outcome_termination_and_winner() -> None:
     """A role-based win should use the canonical outcome model directly."""
     event = OverEvent(
         outcome=Outcome.WIN,
@@ -43,7 +43,7 @@ def test_role_based_win_uses_outcome_termination_and_winner():
     assert event.is_loss_for(Color.WHITE) is True
 
 
-def test_single_player_win_does_not_require_a_winner():
+def test_single_player_win_does_not_require_a_winner() -> None:
     """A single-player success should not need role metadata."""
     event = OverEvent(
         outcome=Outcome.WIN,
@@ -58,7 +58,7 @@ def test_single_player_win_does_not_require_a_winner():
     assert event.is_win_for(SoloRole.SOLO) is False
 
 
-def test_single_player_loss_is_role_free():
+def test_single_player_loss_is_role_free() -> None:
     """A single-player failure should be represented without a fake winner."""
     event = OverEvent(
         outcome=Outcome.LOSS,
@@ -74,7 +74,7 @@ def test_single_player_loss_is_role_free():
     assert event.is_loss_for(SoloRole.SOLO) is False
 
 
-def test_unknown_outcome_is_not_over():
+def test_unknown_outcome_is_not_over() -> None:
     """Outcome.UNKNOWN should represent the absence of a terminal result."""
     event = OverEvent(outcome=Outcome.UNKNOWN)
 
@@ -92,13 +92,16 @@ def test_unknown_outcome_is_not_over():
         (Outcome.UNKNOWN, TeamRole.ATTACKER),
     ],
 )
-def test_non_win_outcomes_reject_winner_metadata(outcome, winner):
+def test_non_win_outcomes_reject_winner_metadata(
+    outcome: Outcome,
+    winner: Color | TeamRole,
+) -> None:
     """Only win outcomes may carry winner metadata."""
     with pytest.raises(AssertionError):
         OverEvent(outcome=outcome, winner=winner)
 
 
-def test_generic_role_helpers_work_with_non_color_roles():
+def test_generic_role_helpers_work_with_non_color_roles() -> None:
     """The final model should work with any hashable role identity."""
     event = OverEvent(
         outcome=Outcome.WIN,
@@ -111,7 +114,7 @@ def test_generic_role_helpers_work_with_non_color_roles():
     assert event.is_loss_for(TeamRole.ATTACKER) is False
 
 
-def test_test_method_rejects_invalid_mutated_state():
+def test_test_method_rejects_invalid_mutated_state() -> None:
     """The explicit validation helper should catch broken mutated states."""
     event = OverEvent(outcome=Outcome.WIN, winner=Color.WHITE)
     event.outcome = Outcome.DRAW
@@ -120,7 +123,7 @@ def test_test_method_rejects_invalid_mutated_state():
         event.test()
 
 
-def test_bool_raises():
+def test_bool_raises() -> None:
     """Truthiness checks should remain invalid."""
     event = OverEvent(outcome=Outcome.UNKNOWN)
 
@@ -128,7 +131,7 @@ def test_bool_raises():
         bool(event)
 
 
-def test_package_exports_only_include_the_final_over_event_surface():
+def test_package_exports_only_include_the_final_over_event_surface() -> None:
     """Top-level exports should expose the final API only."""
     assert valanga.Outcome is Outcome
     assert valanga.OverEvent is OverEvent

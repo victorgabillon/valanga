@@ -3,14 +3,14 @@
 from valanga import Dynamics, ReversibleDynamics, Transition
 
 
-def test_dynamics_symbols_are_exported():
+def test_dynamics_symbols_are_exported() -> None:
     """Top-level exports should include dynamics symbols."""
     assert Dynamics is not None
     assert ReversibleDynamics is not None
     assert Transition is not None
 
 
-def test_transition_defaults():
+def test_transition_defaults() -> None:
     """Transition should provide expected default values."""
     transition = Transition(next_state="state")
 
@@ -21,7 +21,7 @@ def test_transition_defaults():
     assert dict(transition.info) == {}
 
 
-def test_dynamics_protocol_exposes_name_mapping_methods():
+def test_dynamics_protocol_exposes_name_mapping_methods() -> None:
     """Dynamics protocols should include both mapping directions."""
     assert hasattr(Dynamics, "action_name")
     assert hasattr(Dynamics, "action_from_name")

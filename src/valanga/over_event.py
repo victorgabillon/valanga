@@ -4,6 +4,8 @@ from collections.abc import Hashable
 from dataclasses import dataclass
 from enum import Enum, auto
 
+from .game import Role
+
 
 class OverEventInvariantError(ValueError):
     """OverEvent has no truthiness semantics."""
@@ -23,7 +25,7 @@ class Outcome(Enum):
 
 
 @dataclass(slots=True)
-class OverEvent:
+class OverEvent[RoleT: Role]:
     """Describe a terminal result.
 
     Attributes:
@@ -37,11 +39,12 @@ class OverEvent:
         `termination` describes why play ended.
         `winner` is optional metadata and is only meaningful for role-based
         wins.
+
     """
 
     outcome: Outcome
     termination: Enum | None = None
-    winner: Hashable | None = None
+    winner: RoleT | None = None
 
     def __post_init__(self) -> None:
         """Validate the event state."""
@@ -81,11 +84,11 @@ class OverEvent:
         """Return whether the terminal result is a failure."""
         return self.is_loss()
 
-    def is_win_for(self, role: Hashable) -> bool:
+    def is_win_for(self, role: RoleT) -> bool:
         """Return whether a specific role is the winner."""
         return self.is_win() and self.winner == role
 
-    def is_loss_for(self, role: Hashable) -> bool:
+    def is_loss_for(self, role: RoleT) -> bool:
         """Return whether a specific role lost to a known winner.
 
         For role-free failures, use :meth:`is_failure`.
