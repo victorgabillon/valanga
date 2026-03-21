@@ -21,7 +21,8 @@ class Transition[StateT]:
     """Result of applying an action to a state.
 
     Notes:
-        ``modifications`` is an optional compatibility field for diff-based engines.
+        ``modifications`` is an optional diff field for engines that expose
+        state deltas.
         Reversible engines may instead use their own ``UndoT`` token via
         ``ReversibleDynamics``.
 

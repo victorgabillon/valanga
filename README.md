@@ -9,9 +9,9 @@ Shared Python types and lightweight utilities for describing turn-based games an
 ## Key concepts
 - **Game primitives**: `State`, `HasTurn[RoleT]`, and `TurnState[RoleT]` model states and acting roles. `Color` remains the natural role type for black/white games, while `SoloRole` supports single-player sequential games without fake color semantics. 【F:src/valanga/game.py†L1-L189】
 - **Evaluations**: `Value` carries a score, certainty level, and optional terminal `OverEvent` metadata. 【F:src/valanga/evaluations.py†L31-L47】
-- **Game termination**: `OverEvent` is outcome-centered. Its canonical fields are `outcome`, `termination`, and optional `winner`; legacy `HowOver`, `Winner`, and `OverTags` remain available as compatibility helpers. 【F:src/valanga/over_event.py†L22-L347】
+- **Game termination**: `OverEvent` stores `outcome`, `termination`, and optional `winner` metadata. 【F:src/valanga/over_event.py†L1-L99】
 - **State representations**: `ContentRepresentation` defines how to turn a `State` into evaluator input, and `RepresentationFactory` builds or updates those representations from states and modifications. 【F:src/valanga/represention_for_evaluation.py†L9-L22】【F:src/valanga/representation_factory.py†L7-L55】
-- **Progress reporting**: `PlayerProgressMessage` remains a Color-based compatibility helper for per-player progress reporting. 【F:src/valanga/progress_messsage.py†L1-L13】
+- **Progress reporting**: `PlayerProgressMessage` is a Color-specific helper for per-player progress reporting. It is not part of the core generic role model. 【F:src/valanga/progress_messsage.py†L1-L13】
 
 ## Installation
 ```bash
@@ -20,7 +20,7 @@ pip install .
 The project targets Python 3.13 and has no required runtime dependencies.
 
 ## Quick start
-Below is a minimal example that records both a two-player terminal result and a single-player terminal result using the preferred API:
+Below is a minimal example that records both a two-player terminal result and a single-player terminal result:
 ```python
 from enum import Enum, auto
 

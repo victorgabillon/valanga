@@ -40,11 +40,10 @@ class Certainty(Enum):
 
 @dataclass(frozen=True, slots=True)
 class Value:
-    """Score plus certainty and optional canonical terminal outcome metadata.
+    """Score plus certainty and optional terminal outcome metadata.
 
-    When present, `over_event` should be interpreted through its preferred
-    `outcome`, `termination`, and optional `winner` fields rather than through
-    the legacy compatibility projections.
+    When present, `over_event` is described by its `outcome`, `termination`,
+    and optional `winner` fields.
     """
 
     score: float

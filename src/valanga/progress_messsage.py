@@ -1,8 +1,7 @@
 """Progress-message helpers.
 
-`PlayerProgressMessage` remains a Color-oriented helper for existing
-two-player integrations. The preferred generalized acting-role model now lives
-in :mod:`valanga.game`.
+`PlayerProgressMessage` is a Color-specific helper for two-player progress
+reporting. It is not part of the core generic role model.
 """
 
 from dataclasses import dataclass

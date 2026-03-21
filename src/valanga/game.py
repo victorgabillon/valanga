@@ -1,8 +1,8 @@
 """Common game primitives shared by multiple libraries.
 
-This module keeps `Color` for current black/white games while generalizing
-turn-carrying protocols so `turn` means the current acting role, not
-specifically white or black.
+This module models sequential games in terms of acting roles. `Color` is a
+concrete role type for black/white games and `SoloRole` covers single-player
+games.
 """
 
 from collections.abc import Hashable, Iterator, Sequence
@@ -110,17 +110,14 @@ BLACK: ColorIndex = 0
 
 
 class Color(int, Enum):
-    """Represents the acting role for a two-player black/white game.
-
-    `Color` is one concrete role type, not the universal turn model.
-    """
+    """A concrete acting-role type for a two-player black/white game."""
 
     WHITE = WHITE
     BLACK = BLACK
 
 
 class SoloRole(Enum):
-    """Represents the preferred acting role type for single-player games."""
+    """The acting-role type for a single-player sequential game."""
 
     SOLO = "solo"
 
@@ -177,8 +174,8 @@ class TurnState(State, HasTurn[RoleT_co], Protocol[RoleT_co]):
 class TurnStatePlusHistory[StateT = Any, RoleT: Hashable = Color]:
     """A turn-carrying state snapshot with historical actions and states.
 
-    The role type defaults to :class:`Color` for backward compatibility, but
-    the preferred model is role-generic.
+    The role type defaults to :class:`Color` for convenience in two-player
+    games while remaining fully generic.
     """
 
     @staticmethod

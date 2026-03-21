@@ -9,7 +9,7 @@ from valanga.game import TurnStatePlusHistory
 
 @dataclass(frozen=True)
 class ChessLikeState:
-    """Simple two-player turn state used to exercise Color compatibility."""
+    """Simple two-player turn state used to exercise Color roles."""
 
     tag: str
     turn: Color
@@ -59,8 +59,8 @@ def tagged_solo_state(state: TurnState[SoloRole]) -> tuple[str, SoloRole]:
     return state.tag, state.turn
 
 
-def test_color_turn_state_compatibility_is_preserved():
-    """Existing Color-based turn states should still look natural."""
+def test_color_turn_state_is_natural():
+    """Color should remain a natural concrete role type."""
     state = ChessLikeState(tag="midgame", turn=Color.BLACK)
 
     assert acting_color(state) is Color.BLACK
@@ -82,7 +82,7 @@ def test_solo_role_turn_state_works_without_fake_color():
 
 
 def test_package_exports_include_new_role_symbols():
-    """Top-level exports should include the new solo-role surface."""
+    """Top-level exports should include the final role-model surface."""
     assert valanga.Color is Color
     assert valanga.SoloRole is SoloRole
     assert valanga.SOLO is SoloRole.SOLO
