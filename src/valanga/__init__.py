@@ -15,7 +15,7 @@ from .game import (
     StateTag,
     TurnState,
 )
-from .over_event import OverEvent
+from .over_event import HowOver, Outcome, OverEvent, OverTags, Winner
 from .progress_messsage import PlayerProgressMessage
 from .representation_factory import RepresentationFactory
 from .represention_for_evaluation import ContentRepresentation
@@ -32,7 +32,10 @@ __all__ = [
     "Dynamics",
     "EvalItem",
     "HasTurn",
+    "HowOver",
+    "Outcome",
     "OverEvent",
+    "OverTags",
     "PlayerProgressMessage",
     "RepresentationFactory",
     "ReversibleDynamics",
@@ -41,4 +44,5 @@ __all__ = [
     "StateTag",
     "Transition",
     "TurnState",
+    "Winner",
 ]
