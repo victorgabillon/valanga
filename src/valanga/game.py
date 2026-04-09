@@ -27,8 +27,8 @@ type ActionName = Annotated[str, "A human-readable name for an action of a state
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
 T_co = TypeVar("T_co", bound=Hashable, covariant=True)
-RoleT = TypeVar("RoleT", bound=Hashable)
-RoleT_co = TypeVar("RoleT_co", bound=Hashable, covariant=True)
+RoleT = TypeVar("RoleT", bound=Role, default=Any)
+RoleT_co = TypeVar("RoleT_co", bound=Role, covariant=True, default=Any)
 
 
 class BranchKeyGeneratorP(Protocol[T_co]):

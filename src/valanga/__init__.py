@@ -1,5 +1,6 @@
 """Common types and utilities shared by multiple libraries."""
 
+from .checkpoints import StateCheckpointCodec, StateFromTagResolver
 from .dynamics import Dynamics, Transition
 from .evaluations import EvalItem
 from .game import (
@@ -44,6 +45,8 @@ __all__ = [
     "Role",
     "SoloRole",
     "State",
+    "StateCheckpointCodec",
+    "StateFromTagResolver",
     "StateModifications",
     "StateTag",
     "Transition",
