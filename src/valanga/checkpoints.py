@@ -10,12 +10,13 @@ from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Protocol, TypeVar
 
-from .game import BranchKey, StateTag
+from .game import StateTag
 
 StateT = TypeVar("StateT")
 TagT = TypeVar("TagT", bound=Hashable)
 AnchorRefT = TypeVar("AnchorRefT")
 DeltaRefT = TypeVar("DeltaRefT")
+BranchRefT = TypeVar("BranchRefT")
 
 __all__ = [
     "CheckpointStateSummary",
@@ -76,19 +77,22 @@ class StateCheckpointSummaryCodec[StateT](Protocol):
         ...
 
 
-class IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT](Protocol):
+class IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT, BranchRefT](
+    Protocol
+):
     """Checkpoint codec for parent/delta reconstruction with periodic anchors.
 
     This protocol extends the checkpoint surface beyond whole-state round trips.
     It supports:
 
-    - explicit anchor snapshots that can reconstruct a state on their own
-    - parent-to-child deltas for incremental reconstruction
+    - explicit anchor snapshots that act as self-sufficient reconstruction points
+    - parent-to-child deltas defined relative to a concrete parent state
     - optional branch context when a domain can use it to encode a delta
 
     Higher-level systems such as Anemone can decide when to record anchors,
-    when to store deltas, and how to manage lazy state handles. Valanga keeps
-    this protocol focused on the domain-facing reconstruction operations only.
+    when to store deltas, and how to combine this protocol with lazy state
+    handles or checkpoint policies. Valanga keeps this protocol focused on the
+    domain-facing reconstruction operations only.
     """
 
     def dump_anchor_ref(self, state: StateT) -> AnchorRefT:
@@ -104,7 +108,7 @@ class IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT](Protocol):
         *,
         parent_state: StateT,
         child_state: StateT,
-        branch_from_parent: BranchKey | None = None,
+        branch_from_parent: BranchRefT | None = None,
     ) -> DeltaRefT:
         """Return a delta payload that reconstructs ``child_state`` from ``parent_state``.
 
@@ -112,7 +116,6 @@ class IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT](Protocol):
         derive a more compact or clearer delta when the parent-to-child branch
         identity is known.
         """
-
         ...
 
     def load_child_from_delta(

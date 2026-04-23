@@ -50,7 +50,7 @@ class FakeStateSummaryCodec(StateCheckpointSummaryCodec[FakeState]):
 
 
 class FakeIncrementalCodec(
-    IncrementalStateCheckpointCodec[FakeState, dict[str, object], int]
+    IncrementalStateCheckpointCodec[FakeState, dict[str, object], int, str]
 ):
     """Incremental codec using whole-state anchors and integer deltas."""
 
@@ -67,7 +67,7 @@ class FakeIncrementalCodec(
         *,
         parent_state: FakeState,
         child_state: FakeState,
-        branch_from_parent: object | None = None,
+        branch_from_parent: str | None = None,
     ) -> int:
         """Encode only the integer delta between parent and child."""
         del branch_from_parent
@@ -107,8 +107,8 @@ def round_trip[StateT](
     return codec.load_state_ref(codec.dump_state_ref(state))
 
 
-def rebuild_child[StateT, AnchorRefT, DeltaRefT](
-    codec: IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT],
+def rebuild_child[StateT, AnchorRefT, DeltaRefT, BranchRefT](
+    codec: IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT, BranchRefT],
     *,
     parent_state: StateT,
     child_state: StateT,
@@ -176,11 +176,14 @@ def test_incremental_checkpoint_codec_reconstructs_child_from_parent_delta() -> 
     parent_state = FakeState(x=10, y="lane")
     child_state = FakeState(x=14, y="lane")
 
-    assert rebuild_child(
-        codec,
-        parent_state=parent_state,
-        child_state=child_state,
-    ) == child_state
+    assert (
+        rebuild_child(
+            codec,
+            parent_state=parent_state,
+            child_state=child_state,
+        )
+        == child_state
+    )
 
 
 def test_incremental_checkpoint_codec_restores_anchor_snapshots() -> None:
