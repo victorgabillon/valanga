@@ -1,6 +1,12 @@
 """Common types and utilities shared by multiple libraries."""
 
-from .checkpoints import StateCheckpointCodec, StateFromTagResolver
+from .checkpoints import (
+    CheckpointStateSummary,
+    IncrementalStateCheckpointCodec,
+    StateCheckpointCodec,
+    StateCheckpointSummaryCodec,
+    StateFromTagResolver,
+)
 from .dynamics import Dynamics, Transition
 from .evaluations import EvalItem
 from .game import (
@@ -37,6 +43,7 @@ __all__ = [
     "Dynamics",
     "EvalItem",
     "HasTurn",
+    "IncrementalStateCheckpointCodec",
     "Outcome",
     "OverEvent",
     "PlayerProgressMessage",
@@ -46,6 +53,8 @@ __all__ = [
     "SoloRole",
     "State",
     "StateCheckpointCodec",
+    "StateCheckpointSummaryCodec",
+    "CheckpointStateSummary",
     "StateFromTagResolver",
     "StateModifications",
     "StateTag",
