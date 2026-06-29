@@ -26,29 +26,29 @@ test = [
 ]
 
 lint = [
-  "ruff>=0.15.10",
-  "pylint>=4.0.5",
+  "ruff>=0.15.20",
+  "pylint>=4.0.6",
 ]
 
 typecheck = [
-  "mypy>=1.19.1",
-  "pyright[nodejs]>=1.1.408",
+  "mypy>=2.1.0",
+  "pyright[nodejs]>=1.1.411",
 ]
 
 
 dev = [
     # Development dependencies (includes test)
-    "tox>=4.32.0",
-    "types-PyYAML>=6.0.12.12",
+    "tox>=4.56.1",
+    "types-PyYAML>=6.0.12.20260518",
 
     # Linting & formatting
-    "ruff>=0.15.10",
-    "pylint>=4.0.5",
-    "black>=25.12.0",
+    "ruff>=0.15.20",
+    "pylint>=4.0.6",
+    "black>=26.5.1",
 
     # Type checking
-    "mypy>=1.19.1",
-    "pyright[nodejs]>=1.1.408",
+    "mypy>=2.1.0",
+    "pyright[nodejs]>=1.1.411",
 
     # Building & publishing
     "build",
@@ -191,7 +191,7 @@ commands = [["pytest", "{posargs}"]]
 [tool.tox.env.lint]
 description = "ruff + pylint (fast, no package install)"
 package = "skip"
-deps = ["ruff>=0.15.10", "pylint>=4.0.5"]
+deps = ["ruff>=0.15.20", "pylint>=4.0.6"]
 set_env = { PYTHONPATH = "{toxinidir}/src" }
 commands = [
   ["python", "-m", "ruff", "check", "src"],
@@ -202,7 +202,7 @@ commands = [
 [tool.tox.env.typecheck]
 description = "mypy + pyright (fast, no package install)"
 package = "skip"
-deps = ["mypy>=1.19.1", "pyright[nodejs]>=1.1.408"]
+deps = ["mypy>=2.1.0", "pyright[nodejs]>=1.1.411"]
 set_env = { MYPYPATH = "{toxinidir}/src" }
 commands = [
   ["python", "-m", "mypy", "--config-file", "pyproject.toml", "src/valanga"],
