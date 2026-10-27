@@ -2,10 +2,10 @@
 
 from typing import Protocol
 
-from valanga.game import BranchKey, BranchKeyGeneratorP
+from valanga.game import BranchKey, BranchKeyGeneratorP, State
 
 
-class ReversibleDynamics[StateT, UndoT](Protocol):
+class ReversibleDynamics[StateT: State, UndoT](Protocol):
     """Stateful dynamics API supporting push/pop operations."""
 
     @property

@@ -4,7 +4,7 @@ from collections.abc import Mapping
 from dataclasses import dataclass, field
 from typing import Any, Protocol
 
-from .game import BranchKey, BranchKeyGeneratorP, Role, StateModifications
+from .game import BranchKey, BranchKeyGeneratorP, Role, State, StateModifications
 from .over_event import OverEvent
 
 
@@ -35,7 +35,7 @@ class Transition[StateT]:
     )
 
 
-class Dynamics[StateT](Protocol):
+class Dynamics[StateT: State](Protocol):
     """Stateless game dynamics API."""
 
     def legal_actions(self, state: StateT) -> BranchKeyGeneratorP[BranchKey]:

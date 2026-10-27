@@ -2,8 +2,15 @@
 
 from typing import Protocol
 
+from valanga.evaluator_types import EvaluatorInput
 
-class ContentRepresentation[StateT_contra, EvalIn_co](Protocol):
+from .game import State
+
+
+class ContentRepresentation[
+    StateT_contra: State = State,
+    EvalIn_co: EvaluatorInput = EvaluatorInput,
+](Protocol):
     """Define the interface for a content representation.
 
     It is a function returning the proper input for evaluation by the content evaluator.

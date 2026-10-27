@@ -67,3 +67,11 @@ Python 3.14 uses deferred annotations by default. Runtime consumers should use
 `typing.get_type_hints` for resolved types and `annotationlib.get_annotations`
 with `Format.STRING` when annotation text is needed. Generic protocols use native
 type parameters; acting roles and branch keys retain their hashable bounds.
+
+Generic type contracts are checked by both mypy and Pyright in `tox -e typecheck`.
+The fixtures verify key/role covariance, selector/input contravariance, output
+covariance, state/transition relationships and undo-token identity. Both checkers
+must also reject the marked invalid examples in `tests/typing/invalid.py`.
+`Dynamics` and `ReversibleDynamics` require a `State`; tag resolvers require
+hashable tags. `ContentRepresentation` defaults to `State` and `EvaluatorInput`.
+These bounds and defaults are declared on the native type parameters themselves.

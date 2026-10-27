@@ -6,6 +6,7 @@ reconstruct states directly from reversible tags, while others need structured
 or otherwise domain-specific payloads.
 """
 
+from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -121,7 +122,7 @@ class IncrementalStateCheckpointCodec[StateT, AnchorRefT, DeltaRefT, BranchRefT]
         ...
 
 
-class StateFromTagResolver[StateT, TagT](Protocol):
+class StateFromTagResolver[StateT, TagT: Hashable](Protocol):
     """Reconstruct states from reversible tags in domains where that is enough.
 
     This helper protocol is intentionally narrower than

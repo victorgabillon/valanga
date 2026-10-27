@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=82.0.1", "wheel"]
+requires = ["setuptools>=84.2.1", "wheel>=0.48.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -21,47 +21,47 @@ classifiers = [
 [project.optional-dependencies]
 test = [
     # Testing dependencies
-    "pytest>=9.0.2",
-    "coverage",
-    "pytest-cov>=6.0.0"
+    "pytest==9.1.1",
+    "coverage==7.17.0",
+    "pytest-cov==7.1.0"
 ]
 
 lint = [
-  "ruff==0.15.20",
-  "pylint==4.0.6",
+  "ruff==0.17.3",
+  "pylint==4.1.3",
 ]
 
 typecheck = [
-  "mypy==2.1.0",
-  "pyright[nodejs]==1.1.411",
+  "mypy==2.4.0",
+  "pyright[nodejs]==1.1.414",
 ]
 
 
 dev = [
     # Development dependencies (includes test)
-    "tox==4.56.1",
-    "types-PyYAML>=6.0.12.20260518",
+    "tox==4.67.2",
+    "types-PyYAML==6.0.12.20260906",
 
     # Linting & formatting
-    "ruff==0.15.20",
-    "pylint==4.0.6",
-    "black>=26.5.1",
+    "ruff==0.17.3",
+    "pylint==4.1.3",
+    "black==26.10.1",
 
     # Type checking
-    "mypy==2.1.0",
-    "pyright[nodejs]==1.1.411",
+    "mypy==2.4.0",
+    "pyright[nodejs]==1.1.414",
 
     # Building & publishing
-    "build",
-    "twine",
+    "build==1.6.1",
+    "twine==7.0.0",
 
     # Documentation
-    "sphinx",
-    "sphinx-rtd-theme",
-    "sphinx-autodoc-typehints",
+    "sphinx==9.2.0",
+    "sphinx-rtd-theme==3.1.0",
+    "sphinx-autodoc-typehints==3.17.3",
 
     # Pre-commit hooks
-    "pre-commit"
+    "pre-commit==4.7.0"
 
 ]
 
@@ -77,10 +77,10 @@ testpaths = [
 
 [tool.mypy]
 python_version = "3.14"
+strict = true
 mypy_path = "src"
 namespace_packages = true
 explicit_package_bases = true
-ignore_missing_imports = true
 show_error_codes = true
 warn_unreachable = true
 no_implicit_reexport = true
@@ -110,12 +110,12 @@ line-length = 88
 target-version = "py314"
 
 # Enable import sorting (alphabetical + group order)
-lint.select = ["I", "F", "E", "B", "TCH","UP","SIM",
+lint.select = ["I", "F", "E", "B", "TC","UP","SIM",
  "C4", "RUF", "PL","RET","ARG","ANN", "PERF", "TRY","LOG","RSE",
  "D","ISC","PIE","ERA","TD"]  # I = imports, F = pyflakes, E = pycodestyle, TCH = type-checking, B = black
 
 # Allow auto-fixing for imports and type-checking imports
-lint.fixable = ["I", "TCH", "F401", "RUF","PL","D"]
+lint.fixable = ["I", "TC", "F401", "RUF","PL","D"]
 
 # Ignore rules you don't care about
 lint.ignore = [ "E501",
@@ -171,7 +171,7 @@ reportPrivateImportUsage = false
 #################### TOX ####################
 
 [tool.tox]
-min_version = "4.32.0"
+min_version = "4.67.2"
 env_list = ["py314", "lint", "typecheck", "build"]
 isolated_build = true
 
@@ -186,7 +186,7 @@ commands = [["pytest", "{posargs}"]]
 [tool.tox.env.lint]
 description = "ruff + pylint (fast, no package install)"
 package = "skip"
-deps = ["ruff==0.15.20", "pylint==4.0.6"]
+deps = ["ruff==0.17.3", "pylint==4.1.3"]
 set_env = { PYTHONPATH = "{toxinidir}/src" }
 commands = [
   ["python", "-m", "ruff", "check", "src"],
@@ -197,16 +197,17 @@ commands = [
 [tool.tox.env.typecheck]
 description = "mypy + pyright (fast, no package install)"
 package = "skip"
-deps = ["mypy==2.1.0", "pyright[nodejs]==1.1.411"]
+deps = ["mypy==2.4.0", "pyright[nodejs]==1.1.414"]
 set_env = { MYPYPATH = "{toxinidir}/src" }
 commands = [
-  ["python", "-m", "mypy", "--config-file", "pyproject.toml", "src/valanga"],
-  ["python", "-m", "pyright", "src/valanga"],
+  ["python", "-m", "mypy", "--config-file", "pyproject.toml", "src/valanga", "tests/typing/protocols.py"],
+  ["python", "-m", "pyright", "src/valanga", "tests/typing/protocols.py"],
+  ["python", "tools/check_type_contracts.py"],
 ]
 
 
 [tool.tox.env.build]
-deps = ["build"]
+deps = ["build==1.6.1"]
 commands = [["python", "-m", "build"]]
 
 
