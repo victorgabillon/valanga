@@ -8,6 +8,11 @@ from .game import BranchKey, BranchKeyGeneratorP, Role, StateModifications
 from .over_event import OverEvent
 
 
+def _make_info() -> Mapping[str, Any]:
+    """Return independent transition metadata without a generic-alias call."""
+    return {}
+
+
 @dataclass(frozen=True)
 class Transition[StateT]:
     """Result of applying an action to a state.
@@ -25,7 +30,7 @@ class Transition[StateT]:
     is_over: bool = False
     over_event: OverEvent[Role] | None = None
     info: Mapping[str, Any] = field(
-        default_factory=dict[str, Any],
+        default_factory=_make_info,
         doc="Additional domain-specific transition metadata.",
     )
 

@@ -49,7 +49,7 @@ def test_dataclass_annotations_and_factory_isolation() -> None:
     assert get_type_hints(OverEvent)["outcome"] is Outcome
     assert get_type_hints(Transition)["next_state"] is Transition.__type_params__[0]
     info = next(f for f in fields(Transition) if f.name == "info")
-    assert get_origin(info.default_factory) is dict
+    assert info.default_factory() == {}
     assert info.doc == "Additional domain-specific transition metadata."
     first = Transition(next_state="first")
     second = Transition(next_state="second")
