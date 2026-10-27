@@ -2,7 +2,7 @@
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
-from typing import Protocol, TypeVar
+from typing import Protocol
 
 from valanga.evaluations import Value
 from valanga.game import BranchKey, BranchName, Seed, State
@@ -27,10 +27,7 @@ class Recommendation:
     branch_evals: Mapping[BranchName, Value] | None = None
 
 
-StateT_contra = TypeVar("StateT_contra", bound=State, contravariant=True)
-
-
-class BranchSelector(Protocol[StateT_contra]):
+class BranchSelector[StateT_contra: State](Protocol):
     """Protocol for a branch selector."""
 
     def recommend(

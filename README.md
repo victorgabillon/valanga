@@ -1,6 +1,6 @@
 # valanga
 
-![Python 3.13](https://img.shields.io/badge/python-3.13-blue?logo=python)
+![Python 3.14](https://img.shields.io/badge/python-3.14-blue?logo=python)
 [![Tests](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml/badge.svg?label=tests)](https://github.com/victorgabillon/valanga/actions/workflows/ci.yaml)
 [![License: GPL v3](https://img.shields.io/github/license/victorgabillon/valanga)](LICENSE)
 
@@ -17,7 +17,7 @@ Shared Python types and lightweight utilities for describing turn-based games an
 ```bash
 pip install .
 ```
-The project targets Python 3.13 and has no required runtime dependencies.
+The project targets Python 3.14 and has no required runtime dependencies.
 
 ## Quick start
 Below is a minimal example that records both a two-player terminal result and a single-player terminal result:
@@ -57,6 +57,13 @@ To wire in a custom state representation, supply callables to `RepresentationFac
 ## Development
 Install the development dependencies and run the test suite:
 ```bash
-pip install -e '.[dev]'
-pytest
+uv venv --python 3.14
+uv pip install -e '.[test,dev]'
+source .venv/bin/activate
+tox
 ```
+
+Python 3.14 uses deferred annotations by default. Runtime consumers should use
+`typing.get_type_hints` for resolved types and `annotationlib.get_annotations`
+with `Format.STRING` when annotation text is needed. Generic protocols use native
+type parameters; acting roles and branch keys retain their hashable bounds.

@@ -5,10 +5,10 @@ from enum import Enum, auto
 from typing import Protocol
 
 from valanga.evaluator_types import EvaluatorInput
+from valanga.represention_for_evaluation import ContentRepresentation
 
 from .game import BranchKey, Role, State
 from .over_event import OverEvent
-from .represention_for_evaluation import ContentRepresentation
 
 
 class EvalItem[StateT: State](Protocol):

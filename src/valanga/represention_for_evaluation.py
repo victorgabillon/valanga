@@ -1,16 +1,6 @@
 """Contains the definition of the ContentRepresentation protocol for content representations used in evaluations."""
 
-from typing import Protocol, TypeVar
-
-from valanga.evaluator_types import EvaluatorInput
-
-from .game import State
-
-StateT_contra = TypeVar("StateT_contra", bound=State, contravariant=True, default=State)
-
-EvalIn_co = TypeVar(
-    "EvalIn_co", covariant=True, bound=EvaluatorInput, default=EvaluatorInput
-)
+from typing import Protocol
 
 
 class ContentRepresentation[StateT_contra, EvalIn_co](Protocol):

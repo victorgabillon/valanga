@@ -6,17 +6,10 @@ reconstruct states directly from reversible tags, while others need structured
 or otherwise domain-specific payloads.
 """
 
-from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Protocol, TypeVar
+from typing import Protocol
 
 from .game import StateTag
-
-StateT = TypeVar("StateT")
-TagT = TypeVar("TagT", bound=Hashable)
-AnchorRefT = TypeVar("AnchorRefT")
-DeltaRefT = TypeVar("DeltaRefT")
-BranchRefT = TypeVar("BranchRefT")
 
 __all__ = [
     "CheckpointStateSummary",

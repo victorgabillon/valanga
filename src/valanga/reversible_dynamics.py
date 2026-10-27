@@ -1,12 +1,8 @@
 """Optional reversible game dynamics protocol."""
 
-from typing import Protocol, TypeVar
+from typing import Protocol
 
-from .game import BranchKey, BranchKeyGeneratorP
-from .game import State as StateP
-
-StateT = TypeVar("StateT", bound=StateP)
-UndoT = TypeVar("UndoT")
+from valanga.game import BranchKey, BranchKeyGeneratorP
 
 
 class ReversibleDynamics[StateT, UndoT](Protocol):

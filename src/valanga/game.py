@@ -8,7 +8,7 @@ games.
 from collections.abc import Hashable, Iterator, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Annotated, Any, Protocol, Self, TypeVar
+from typing import Annotated, Any, Protocol, Self
 
 type Seed = Annotated[int, "seed"]
 type Role = Hashable
@@ -26,12 +26,8 @@ type ActionName = Annotated[str, "A human-readable name for an action of a state
 
 type ActionKey = Annotated[Hashable, "A label or identifier for an action"]
 
-T_co = TypeVar("T_co", bound=Hashable, covariant=True)
-RoleT = TypeVar("RoleT", bound=Role, default=Any)
-RoleT_co = TypeVar("RoleT_co", bound=Role, covariant=True, default=Any)
 
-
-class BranchKeyGeneratorP(Protocol[T_co]):
+class BranchKeyGeneratorP[T_co: Hashable](Protocol):
     """Protocol for a branch key generator that yields branch keys."""
 
     # whether to sort the branch keys by their respective uci for easy comparison of various implementations
@@ -127,26 +123,16 @@ class SoloRole(Enum):
 SOLO: SoloRole = SoloRole.SOLO
 
 
-def _actions_history_factory() -> list[ActionKey]:
-    return []
-
-
 @dataclass
 class StatePlusHistory[StateT]:
     """A State with historical actions and states."""
 
-    @staticmethod
-    def _states_factory() -> list[StateT]:
-        return []
-
     current_state_tag: StateTag
-    historical_actions: list[ActionKey] = field(
-        default_factory=_actions_history_factory
-    )
-    historical_states: list[StateT] = field(default_factory=_states_factory)
+    historical_actions: list[ActionKey] = field(default_factory=list[ActionKey])
+    historical_states: list[StateT] = field(default_factory=list[StateT])
 
 
-class HasTurn(Protocol[RoleT_co]):
+class HasTurn[RoleT_co: Role = Any](Protocol):
     """Protocol for a state-like object with a current acting role.
 
     The `turn` attribute is intentionally role-generic. `Color` remains a valid
@@ -166,7 +152,7 @@ class HasTurn(Protocol[RoleT_co]):
         ...
 
 
-class TurnState(State, HasTurn[RoleT_co], Protocol[RoleT_co]):
+class TurnState[RoleT_co: Role = Any](State, HasTurn[RoleT_co], Protocol):
     """A State that also exposes the current acting role."""
 
     ...
@@ -180,13 +166,7 @@ class TurnStatePlusHistory[StateT = Any, TurnRoleT: Role = Color]:
     games while remaining fully generic.
     """
 
-    @staticmethod
-    def _states_factory() -> list[StateT]:
-        return []
-
     current_state_tag: StateTag
     turn: TurnRoleT
-    historical_actions: list[ActionKey] = field(
-        default_factory=_actions_history_factory
-    )
-    historical_states: list[StateT] = field(default_factory=_states_factory)
+    historical_actions: list[ActionKey] = field(default_factory=list[ActionKey])
+    historical_states: list[StateT] = field(default_factory=list[StateT])
