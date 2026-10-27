@@ -6,6 +6,13 @@
 
 Shared Python types and lightweight utilities for describing turn-based games and their evaluations. The package exposes protocols for representing states, outcomes, and state representations that other libraries can build on.
 
+## Release 0.3.0
+
+This release requires Python 3.14 and includes native generic protocols with
+explicit state and hashable-key bounds, precise representation defaults, and
+deferred annotations. Both mypy and Pyright validate the generic contracts;
+game primitives and evaluation behavior are preserved.
+
 ## Key concepts
 - **Game primitives**: `State`, `HasTurn[RoleT]`, and `TurnState[RoleT]` model states and acting roles. `Color` remains the natural role type for black/white games, while `SoloRole` supports single-player sequential games without fake color semantics. 【F:src/valanga/game.py†L1-L189】
 - **Evaluations**: `Value` carries a score, certainty level, and optional terminal `OverEvent` metadata. 【F:src/valanga/evaluations.py†L31-L47】
@@ -15,7 +22,7 @@ Shared Python types and lightweight utilities for describing turn-based games an
 
 ## Installation
 ```bash
-pip install .
+pip install valanga==0.3.0
 ```
 The project targets Python 3.14 and has no required runtime dependencies.
 
